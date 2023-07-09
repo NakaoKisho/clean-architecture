@@ -1,5 +1,24 @@
 <a name="readme-top"></a>
 
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>目次 - Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#リポジトリについて---about-the-repository">リポジトリについて - About The Repository</a>
+      <ul>
+        <li><a href="#フレームワークライブラリapi---built-with">フレームワーク/ライブラリ/API - Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#事前作業---prerequisites">事前作業 - Prerequisites</a>
+    </li>
+    <li><a href="#連絡先---contact">連絡先 - Contact</a></li>
+  </ol>
+</details>
+
+
 ## リポジトリについて - About The Repository
 [アーキテクチャ][Android-architecture-ja-url]理解のため、[Retrofit][Retrofit-url]理解のために作成しているAndroidアプリです。<br>
 <br>
@@ -13,7 +32,7 @@ An android app for understanding the [app architecture][Android-architecture-en-
 * [Earthquake Catalog from USGS science for a changing world][Earthquake-catalog-web-api-url]
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### 事前作業 - Prerequisites
+## 事前作業 - Prerequisites
 * local.properties
   ```
   EARTHQUAKE_API_URL=https://earthquake.usgs.gov/fdsnws/event/1/
