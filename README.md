@@ -20,8 +20,10 @@ An android app for understanding the [app architecture][Android-architecture-en-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 連絡先 - Contact
-Nakao - [twitter][Twitter-url] - vegcale@gmail.com
-[![linkedIn][LinkedIn]][LinkedIn-url]
+Nakao
+* [![Gmail][Gmail]](mailto:vegcale@gmail.com)
+* [![Twitter][Twitter]][Twitter-url]
+* [![linkedIn][LinkedIn]][LinkedIn-url]
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -36,3 +38,4 @@ Nakao - [twitter][Twitter-url] - vegcale@gmail.com
 [Twitter-url]: https://twitter.com/@OCL89894812
 [LinkedIn]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [LinkedIn-url]: https://www.linkedin.com/in/kisho-nakao/
+[Gmail]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
