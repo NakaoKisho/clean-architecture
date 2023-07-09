@@ -32,10 +32,10 @@ An android app for understanding the [app architecture][Android-architecture-en-
 
 ### フレームワーク/ライブラリ/API - Built With
 * [![Android][Android]][Android-url]
-* [![Kotlin][Kotlin]][Kotlin-url]
-* [Retrofit][Retrofit-url]
 * [Earthquake Catalog from USGS science for a changing world][Earthquake-catalog-web-api-url]
 * [Hilt][Hilt-url]
+* [![Kotlin][Kotlin]][Kotlin-url]
+* [Retrofit][Retrofit-url]
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 ## 事前作業 - Prerequisites
