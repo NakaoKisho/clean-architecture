@@ -32,7 +32,7 @@ An android app for understanding the [app architecture][Android-architecture-en-
 
 ### フレームワーク/ライブラリ/API - Built With
 * [![Android][Android]][Android-url]
-* [![Earthquake-catalog-api][Earthquake Catalog from USGS science for a changing world]][Earthquake-catalog-web-api-url]
+* [![Earthquake Catalog from USGS science for a changing world][Earthquake-catalog-api]][Earthquake-catalog-web-api-url]
 * [![Hilt][Hilt]][Hilt-url]
 * [![Kotlin][Kotlin]][Kotlin-url]
 * [![Retrofit][Retrofit]][Retrofit-url]
