@@ -47,10 +47,10 @@ An android app for understanding the [app architecture][Android-architecture-en-
 
 ## 連絡先 - Contact
 Nakao
-* [![Blog][Blog]][vegcale-blog-url]
 * [![Gmail][Gmail]](mailto:vegcale@gmail.com)
 * [![linkedIn][LinkedIn]][LinkedIn-url]
 * [![Twitter][Twitter]][Twitter-url]
+* [![Blog][Blog]][vegcale-blog-url]
 * [![Wantedly][Wantedly]][Wantedly-url]
 <p align="right"><a href="#readme-top">back to top</a></p>
 
