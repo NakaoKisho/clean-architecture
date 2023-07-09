@@ -47,15 +47,16 @@ An android app for understanding the [app architecture][Android-architecture-en-
 
 ## 連絡先 - Contact
 Nakao
-* [![Twitter][Twitter]][Twitter-url]
-* [![linkedIn][LinkedIn]][LinkedIn-url]
-* [Wantedly][Wantedly-url]
-* [Blog][vegcale-blog-url]
+* [![Blog][Blog]][vegcale-blog-url]
 * [![Gmail][Gmail]](mailto:vegcale@gmail.com)
+* [![linkedIn][LinkedIn]][LinkedIn-url]
+* [![Twitter][Twitter]][Twitter-url]
+* [Wantedly][Wantedly-url]
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 <!-- IMAGES -->
 [Android]: https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white
+[Blog]: https://img.shields.io/badge/BLOG-vegcale-green?labelColor=blue&link=https%3A%2F%2Fvegcale.com%2Fhome%2F
 [Gmail]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
 [Kotlin]: https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white
 [LinkedIn]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
