@@ -46,10 +46,11 @@ An android app for understanding the [app architecture][Android-architecture-en-
 
 ## 連絡先 - Contact
 Nakao
-* [![Gmail][Gmail]](mailto:vegcale@gmail.com)
 * [![Twitter][Twitter]][Twitter-url]
 * [![linkedIn][LinkedIn]][LinkedIn-url]
 * [Wantedly][Wantedly-url]
+* [Blog][vegcale-blog-url]
+* [![Gmail][Gmail]](mailto:vegcale@gmail.com)
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -67,3 +68,4 @@ Nakao
 [Gmail]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
 [Wantedly-url]: https://www.wantedly.com/id/kisho_nakao
 [Earthquake-catalog-web-api-url]: https://earthquake.usgs.gov/fdsnws/event/1/#kmlanimated
+[vegcale-blog-url]: https://vegcale.com/home/
