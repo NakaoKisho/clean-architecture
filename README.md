@@ -23,21 +23,21 @@
 [アーキテクチャ][Android-architecture-ja-url]理解のため、[Retrofit][Retrofit-url]理解のために作成しているAndroidアプリです。<br>
 <br>
 An android app for understanding the [app architecture][Android-architecture-en-url] and [Retrofit][Retrofit-url]
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right"><a href="#readme-top">back to top</a></p>
 
 ### フレームワーク/ライブラリ/API - Built With
 * [![Android][Android]][Android-url]
 * [![Kotlin][Kotlin]][Kotlin-url]
 * [Retrofit][Retrofit-url]
 * [Earthquake Catalog from USGS science for a changing world][Earthquake-catalog-web-api-url]
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right"><a href="#readme-top">back to top</a></p>
 
 ## 事前作業 - Prerequisites
 * local.properties
   ```
   EARTHQUAKE_API_URL=https://earthquake.usgs.gov/fdsnws/event/1/
   ```
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right"><a href="#readme-top">back to top</a></p>
 
 ## 連絡先 - Contact
 Nakao
@@ -45,7 +45,7 @@ Nakao
 * [![Twitter][Twitter]][Twitter-url]
 * [![linkedIn][LinkedIn]][LinkedIn-url]
 * [Wantedly][Wantedly-url]
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right"><a href="#readme-top">back to top</a></p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [Kotlin]: https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white
