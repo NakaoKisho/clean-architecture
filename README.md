@@ -8,15 +8,15 @@ An android app for understanding the [app architecture][Android-architecture-en-
 ### フレームワーク/ライブラリ/API - Built With
 * [![Android][Android]][Android-url]
 * [![Kotlin][Kotlin]][Kotlin-url]
-* [Retrofit](https://square.github.io/retrofit/)
-* [Earthquake Catalog from USGS science for a changeing world](https://earthquake.usgs.gov/fdsnws/event/1/#kmlanimated)
+* [Retrofit][Retrofit-url]
+* [Earthquake Catalog from USGS science for a changeing world][Earthquake-catalog-web-api-url]
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### 事前作業 - Prerequisites
 * local.properties
-  '''
+  ```
   EARTHQUAKE_API_URL=https://earthquake.usgs.gov/fdsnws/event/1/
-  '''
+  ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## 連絡先 - Contact
@@ -24,6 +24,7 @@ Nakao
 * [![Gmail][Gmail]](mailto:vegcale@gmail.com)
 * [![Twitter][Twitter]][Twitter-url]
 * [![linkedIn][LinkedIn]][LinkedIn-url]
+* [Wantedly][Wantedly-url]
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -39,3 +40,5 @@ Nakao
 [LinkedIn]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [LinkedIn-url]: https://www.linkedin.com/in/kisho-nakao/
 [Gmail]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
+[Wantedly-url]: https://www.wantedly.com/id/kisho_nakao
+[Earthquake-catalog-web-api-url]: https://earthquake.usgs.gov/fdsnws/event/1/#kmlanimated
