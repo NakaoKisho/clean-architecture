@@ -1,5 +1,6 @@
 <a name="readme-top"></a>
 
+![][Nexus5-gif]
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -62,3 +63,4 @@ Nakao
 [Gmail]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
 [Wantedly-url]: https://www.wantedly.com/id/kisho_nakao
 [Earthquake-catalog-web-api-url]: https://earthquake.usgs.gov/fdsnws/event/1/#kmlanimated
+[Nexus5-gif]: https://github.com/NakaoKisho/clean-architecture/blob/master/images/architecture_app_Nexus5.gif
