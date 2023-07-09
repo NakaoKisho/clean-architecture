@@ -66,7 +66,7 @@ Nakao
 [Android-architecture-en-url]: https://developer.android.com/topic/architecture/intro?hl=en
 [Android-url]: https://developer.android.com/?gclid=Cj0KCQjwtamlBhD3ARIsAARoaEyq371HcYIsNnendclD_y01sOy5Yjd8YU6xRSa3LqhgAIfdApUzp8gaAs7mEALw_wcB&gclsrc=aw.ds&hl=ja
 [Earthquake-catalog-web-api-url]: https://earthquake.usgs.gov/fdsnws/event/1/#kmlanimated
-[Hilt-rul]: https://dagger.dev/hilt/
+[Hilt-url]: https://dagger.dev/hilt/
 [Kotlin-url]: https://kotlinlang.org/docs/android-overview.html
 [LinkedIn-url]: https://www.linkedin.com/in/kisho-nakao/
 [Retrofit-url]: https://square.github.io/retrofit/
