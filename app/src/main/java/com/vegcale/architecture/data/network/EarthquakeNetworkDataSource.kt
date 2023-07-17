@@ -1,27 +1,15 @@
 package com.vegcale.architecture.data.network
 
-import androidx.annotation.IntRange
-import com.vegcale.architecture.data.model.EarthquakeInfo
+import com.vegcale.architecture.data.model.P2pquakeInfo
+import com.vegcale.architecture.data.model.UsgsEarthquakeInfo
 
 /**
  * このアプリのバックエンドに対するネットワークコールを定義するインターフェース
  */
-interface EarthquakeApi {
-    suspend fun getInfo(format:String, limit: Int, order: String): EarthquakeInfo
-}
-
-enum class P2pquakeCode {
-    ALL,        // 551, 552
-    EARTHQUAKE, // 551
-    TSUNAMI     // 552
+interface UsgsEarthquakeApi {
+    suspend fun getInfo(format:String, limit: Int, order: String): UsgsEarthquakeInfo
 }
 
 interface P2pquakeApi {
-    suspend fun getHistory(
-        codes: P2pquakeCode,
-        @IntRange(from = 1, to = 100) limit: Int,
-        @IntRange(from = 0, to = 100) offset: Int
-    ): Unit
-
-    suspend fun getInfo(id: Int): Unit
+    suspend fun getInfo(limit: Int = 10, offset: Int = 0): List<P2pquakeInfo>
 }

@@ -41,7 +41,8 @@ An android app for understanding the [app architecture][Android-architecture-en-
 ## 事前作業 - Prerequisites
 * local.properties
   ```
-  EARTHQUAKE_API_URL=https://earthquake.usgs.gov/fdsnws/event/1/
+  USGS_EARTHQUAKE_API_URL=https://earthquake.usgs.gov/fdsnws/event/1/
+  P2P_QUAKE_API_URL=https://api.p2pquake.net/v2/history/
   ```
 <p align="right"><a href="#readme-top">back to top</a></p>
 

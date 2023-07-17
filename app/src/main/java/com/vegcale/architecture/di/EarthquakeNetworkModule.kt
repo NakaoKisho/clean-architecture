@@ -1,37 +1,82 @@
 package com.vegcale.architecture.di
 
-import com.vegcale.architecture.data.network.EarthquakeApi
-import com.vegcale.architecture.data.network.retrofit.RetrofitEarthquakeNetwork
-import com.vegcale.architecture.data.network.retrofit.RetrofitEarthquakeNetworkApi
+import com.vegcale.architecture.BuildConfig
+import com.vegcale.architecture.data.network.P2pquakeApi
+import com.vegcale.architecture.data.network.UsgsEarthquakeApi
+import com.vegcale.architecture.data.network.retrofit.RetrofitP2pquakeNetwork
+import com.vegcale.architecture.data.network.retrofit.RetrofitP2pquakeNetworkApi
+import com.vegcale.architecture.data.network.retrofit.RetrofitUsgsEarthquakeNetwork
+import com.vegcale.architecture.data.network.retrofit.RetrofitUsgsEarthquakeNetworkApi
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
+import javax.inject.Qualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-// インターフェースのBinds
 abstract class EarthquakeApiModule {
     @Binds
-    // 関数の戻り値の型で、その関数が提供するインターフェースのインスタンスを知らせます。 -> EarthquakeApi
-    abstract fun bindEarthquakeApi(
-        // 関数のパラメータで、提供する実装を知らせます。 -> RetrofitEarthquakeNetwork
-        retrofitEarthquakeNetwork: RetrofitEarthquakeNetwork
-    ): EarthquakeApi
+    abstract fun bindUsgsEarthquakeApi(
+        retrofitUsgsEarthquakeNetwork: RetrofitUsgsEarthquakeNetwork
+    ): UsgsEarthquakeApi
+
+    @Binds
+    abstract fun bindP2pquakeApi(
+        retrofitP2pEarthquakeNetwork: RetrofitP2pquakeNetwork
+    ): P2pquakeApi
 }
 
 @Module
 @InstallIn(ViewModelComponent::class)
 object EarthquakeNetworkModule {
-    private const val BaseUrl = "https://earthquake.usgs.gov/fdsnws/event/1/"
+    private const val UsgsBaseUrl = BuildConfig.USGS_EARTHQUAKE_API_URL
     @Provides
-    fun provideEarthquakeRetrofit(): RetrofitEarthquakeNetworkApi {
+    fun provideUsgsEarthquakeRetrofit(): RetrofitUsgsEarthquakeNetworkApi {
         return Retrofit
             .Builder()
-            .baseUrl(BaseUrl)
+            .baseUrl(UsgsBaseUrl)
             .build()
-            .create(RetrofitEarthquakeNetworkApi::class.java)
+            .create(RetrofitUsgsEarthquakeNetworkApi::class.java)
+    }
+
+    private const val P2pBaseUrl = BuildConfig.P2P_QUAKE_API_URL
+    @Provides
+    fun provideP2pquakeRetrofit(): RetrofitP2pquakeNetworkApi {
+        return Retrofit
+            .Builder()
+            .baseUrl(P2pBaseUrl)
+            .build()
+            .create(RetrofitP2pquakeNetworkApi::class.java)
+    }
+}
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class IODispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class MainDispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class DefaultDispatcher
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class UnconfinedDispatcher
+
+@Module
+@InstallIn(ViewModelComponent::class)
+object CoroutineDispatcherModule {
+    @DefaultDispatcher
+    @Provides
+    fun provideCoroutineDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Default
     }
 }

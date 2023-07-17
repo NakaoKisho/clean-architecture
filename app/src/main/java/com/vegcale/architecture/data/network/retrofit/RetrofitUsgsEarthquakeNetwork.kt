@@ -1,8 +1,8 @@
 package com.vegcale.architecture.data.network.retrofit
 
 import com.vegcale.architecture.BuildConfig
-import com.vegcale.architecture.data.model.EarthquakeInfo
-import com.vegcale.architecture.data.network.EarthquakeApi
+import com.vegcale.architecture.data.model.UsgsEarthquakeInfo
+import com.vegcale.architecture.data.network.UsgsEarthquakeApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -13,35 +13,31 @@ import javax.inject.Inject
  * Retrofitのcreate()の引数になるインターフェース
  * Retrofitはインターフェースで定義されたAPIエンドポイントの実装を作成する
  */
-interface RetrofitEarthquakeNetworkApi {
+interface RetrofitUsgsEarthquakeNetworkApi {
     @GET("query")
     suspend fun getInfo(
         @Query("format") format: String,
         @Query("limit") limit: Int,
         @Query("orderby") orderBy: String,
-    ): EarthquakeInfo
+    ): UsgsEarthquakeInfo
 }
 
-private const val BaseUrl = BuildConfig.EARTHQUAKE_API_URL
+private const val BaseUrl = BuildConfig.USGS_EARTHQUAKE_API_URL
 
-//private data class NetworkResponse<T>(
-//    val data: T,
-//)
-
-class RetrofitEarthquakeNetwork @Inject constructor(): EarthquakeApi {
-    private val retrofitEarthquakeNetworkApi =
+class RetrofitUsgsEarthquakeNetwork @Inject constructor(): UsgsEarthquakeApi {
+    private val retrofitUsgsEarthquakeNetworkApi =
         Retrofit
             .Builder()
             .baseUrl(BaseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(RetrofitEarthquakeNetworkApi::class.java)
+            .create(RetrofitUsgsEarthquakeNetworkApi::class.java)
 
     /**
      * RetrofitEarthquakeNetworkクラスがEarthquakeNetworkDataSourceを継承しているため、
-     * getInfo(limit: String): List<EarthquakeInfo>をオーバーライドする必要がある。
+     * getInfo(limit: String): List<UsgsEarthquakeInfo>をオーバーライドする必要がある。
      */
-    override suspend fun getInfo(format:String, limit: Int, order: String): EarthquakeInfo {
-        return retrofitEarthquakeNetworkApi.getInfo(format, limit, order)
+    override suspend fun getInfo(format:String, limit: Int, order: String): UsgsEarthquakeInfo {
+        return retrofitUsgsEarthquakeNetworkApi.getInfo(format, limit, order)
     }
 }
