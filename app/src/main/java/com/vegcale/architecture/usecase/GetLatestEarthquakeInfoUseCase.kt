@@ -5,10 +5,9 @@ import com.vegcale.architecture.data.UsgsEarthquakeRepository
 import com.vegcale.architecture.data.model.EarthquakeInfo
 import com.vegcale.architecture.data.model.getDatetime
 import com.vegcale.architecture.data.model.getDepth
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetLatestEarthquakeInfoUseCase @Inject constructor(
@@ -16,12 +15,12 @@ class GetLatestEarthquakeInfoUseCase @Inject constructor(
     private val p2pquakeRepository: P2pquakeRepository,
 ) {
     operator fun invoke(): Flow<List<EarthquakeInfo>> {
-        val usgsEarthquakeFlow =
-            usgsEarthquakeRepository
-                .getInfo("geojson", 20, "time")
-                .map { usgsEarthquakeInfo ->
-                    usgsEarthquakeInfo.features
-                        .map { feature ->
+        return flow {
+            while (true) {
+                val usgsList = usgsEarthquakeRepository
+                    .getInfo("geojson", 10, "time")
+                    .features
+                    .map { feature ->
                         EarthquakeInfo(
                             feature.properties.getDatetime(),
                             feature.properties.place ?: "",
@@ -31,24 +30,22 @@ class GetLatestEarthquakeInfoUseCase @Inject constructor(
                             feature.geometry.getDepth(),
                         )
                     }
-                }
 
-        val p2pEarthquakeFlow =
-            p2pquakeRepository
-                .getInfo(10, 0)
-                .map { p2pquakeInfo ->
-                    p2pquakeInfo.map { data ->
+                val p2pList = p2pquakeRepository
+                    .getInfo(10, 0)
+                    .map { p2pquakeInfo ->
                         EarthquakeInfo(
-                            data.earthquake.getDatetime(),
-                            data.earthquake.hypocenter.name,
-                            data.earthquake.hypocenter.latitude,
-                            data.earthquake.hypocenter.longitude,
-                            data.earthquake.hypocenter.magnitude,
-                            data.earthquake.hypocenter.depth,
+                            p2pquakeInfo.earthquake.getDatetime(),
+                            p2pquakeInfo.earthquake.hypocenter.name,
+                            p2pquakeInfo.earthquake.hypocenter.latitude,
+                            p2pquakeInfo.earthquake.hypocenter.longitude,
+                            p2pquakeInfo.earthquake.hypocenter.magnitude,
+                            p2pquakeInfo.earthquake.hypocenter.depth,
                         )
                     }
-                }
-
-        return merge(usgsEarthquakeFlow, p2pEarthquakeFlow)
+                emit(usgsList + p2pList)
+                delay(15000L)
+            }
+        }
     }
 }

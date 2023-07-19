@@ -2,15 +2,12 @@ package com.vegcale.architecture.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vegcale.architecture.data.P2pquakeRepository
-import com.vegcale.architecture.data.UsgsEarthquakeRepository
 import com.vegcale.architecture.data.model.EarthquakeInfo
 import com.vegcale.architecture.di.DefaultDispatcher
 import com.vegcale.architecture.ui.MainActivityUiState.Success
 import com.vegcale.architecture.usecase.GetLatestEarthquakeInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,17 +24,12 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    usgsEarthquakeRepository: UsgsEarthquakeRepository,
-    p2pquakeRepository: P2pquakeRepository,
+    getLatestEarthquakeInfoUseCase: GetLatestEarthquakeInfoUseCase,
     @DefaultDispatcher defaultDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     val uiState: StateFlow<MainActivityUiState> =
         try {
-            GetLatestEarthquakeInfoUseCase(
-                usgsEarthquakeRepository,
-                p2pquakeRepository,
-            )
-                .invoke()
+            getLatestEarthquakeInfoUseCase()
                 .flowOn(defaultDispatcher)
                 .map<List<EarthquakeInfo>, MainActivityUiState>(::Success)
                 .stateIn(
