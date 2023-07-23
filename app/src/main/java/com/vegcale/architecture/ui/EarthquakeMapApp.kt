@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,6 +17,8 @@ import com.vegcale.architecture.navigation.List
 import com.vegcale.architecture.navigation.Map
 import com.vegcale.architecture.navigation.Settings
 import com.vegcale.architecture.navigation.TopLevelDestination
+import com.vegcale.architecture.navigation.tabRowScreens
+import com.vegcale.architecture.ui.components.EarthquakeMapTopAppBar
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +27,16 @@ fun EarthquakeMapApp() {
     ArchitectureTheme {
         var currentScreen: TopLevelDestination by remember { mutableStateOf(Map) }
         val navController = rememberNavController()
-        Scaffold(){ innerPadding ->
+
+        Scaffold(
+            topBar = {
+                EarthquakeMapTopAppBar(
+                    allScreens = tabRowScreens,
+                    onTabSelected = { screen -> currentScreen = screen },
+                    currentScreen = currentScreen
+                )
+            }
+        ){ innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = Map.route,
@@ -42,4 +54,13 @@ fun EarthquakeMapApp() {
             }
         }
     }
+}
+
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+fun EarthquakeMapAppPreview() {
+    EarthquakeMapApp()
 }

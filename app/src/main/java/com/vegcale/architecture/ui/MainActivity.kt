@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.vegcale.architecture.ui.theme.ArchitectureTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -22,10 +21,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showSystemUi = true,
+    showBackground = true
+)
 @Composable
 fun MainActivityPreview() {
-    ArchitectureTheme {
-        EarthquakeMapApp()
-    }
+    EarthquakeMapApp()
 }
