@@ -37,8 +37,6 @@ An android app for understanding the [app architecture][Android-architecture-en-
 * [![Kotlin][Kotlin]][Kotlin-url]
 * [![Navigation][Navigation]][Navigation-url]
 * [![Retrofit][Retrofit]][Retrofit-url]
-* 
-* Test
 * [![MockServer][MockServer]][MockServer-url]
 <p align="right"><a href="#readme-top">back to top</a></p>
 
