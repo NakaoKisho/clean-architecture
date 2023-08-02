@@ -11,7 +11,12 @@ class P2pquakeRepository @Inject constructor(
     suspend fun getInfo(
         @IntRange(from = 1, to = 100) limit: Int,
         @IntRange(from = 0, to = 100) offset: Int
-    ): List<P2pquakeInfo> {
-        return network.getInfo(limit, offset)
+    ): Result<List<P2pquakeInfo>> {
+        return try {
+            val data = network.getInfo(limit, offset)
+            Result.Success(data)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 }

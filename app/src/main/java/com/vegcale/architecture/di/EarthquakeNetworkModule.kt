@@ -15,6 +15,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Qualifier
 
 @Module
@@ -45,6 +46,9 @@ object EarthquakeNetworkModule {
     }
 
     private const val P2pBaseUrl = BuildConfig.P2P_QUAKE_API_URL
+    @Provides
+    @Named("p2pUrl")
+    fun provideString() = P2pBaseUrl
     @Provides
     fun provideP2pquakeRetrofit(): RetrofitP2pquakeNetworkApi {
         return Retrofit

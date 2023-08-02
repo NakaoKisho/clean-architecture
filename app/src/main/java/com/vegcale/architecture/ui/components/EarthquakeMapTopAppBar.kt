@@ -34,18 +34,19 @@ private const val TabFadeOutAnimationDuration = 100
 fun EarthquakeMapTopAppBar(
     allScreens: List<TopLevelDestination>,
     onTabSelected: (TopLevelDestination) -> Unit,
-    currentScreen: TopLevelDestination
+    currentScreen: TopLevelDestination,
+    modifier: Modifier = Modifier
 ) {
     val color = MaterialTheme.colorScheme.onPrimary
 
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .height(TabHeight)
             .fillMaxWidth(),
         color = MaterialTheme.colorScheme.primary
     ) {
         Row(
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             allScreens.forEach { screen ->

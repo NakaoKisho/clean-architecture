@@ -1,6 +1,5 @@
 package com.vegcale.architecture.data.network.retrofit
 
-import com.vegcale.architecture.BuildConfig
 import com.vegcale.architecture.data.model.P2pquakeInfo
 import com.vegcale.architecture.data.network.P2pquakeApi
 import retrofit2.Retrofit
@@ -8,11 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import javax.inject.Inject
+import javax.inject.Named
 
-/**
- * Retrofitのcreate()の引数になるインターフェース
- * Retrofitはインターフェースで定義されたAPIエンドポイントの実装を作成する
- */
 interface RetrofitP2pquakeNetworkApi {
     @GET("?codes=551")
     suspend fun getInfo(
@@ -21,13 +17,11 @@ interface RetrofitP2pquakeNetworkApi {
     ): List<P2pquakeInfo>
 }
 
-private const val BaseUrl = BuildConfig.P2P_QUAKE_API_URL
-
-class RetrofitP2pquakeNetwork @Inject constructor(): P2pquakeApi {
+class RetrofitP2pquakeNetwork @Inject constructor(@Named("p2pUrl") baseUrl: String): P2pquakeApi {
     private val retrofitP2pquakeNetworkApi =
         Retrofit
             .Builder()
-            .baseUrl(BaseUrl)
+            .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RetrofitP2pquakeNetworkApi::class.java)

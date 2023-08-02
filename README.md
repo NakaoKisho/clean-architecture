@@ -35,7 +35,11 @@ An android app for understanding the [app architecture][Android-architecture-en-
 * [![Earthquake Catalog from USGS science for a changing world][Earthquake-catalog-api]][Earthquake-catalog-web-api-url]
 * [![Hilt][Hilt]][Hilt-url]
 * [![Kotlin][Kotlin]][Kotlin-url]
+* [![Navigation][Navigation]][Navigation-url]
 * [![Retrofit][Retrofit]][Retrofit-url]
+* 
+* Test
+* [![MockServer][MockServer]][MockServer-url]
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 ## 事前作業 - Prerequisites
@@ -63,6 +67,8 @@ Nakao
 [Hilt]: https://img.shields.io/badge/Hilt-%232196F3?style=for-the-badge&link=https%3A%2F%2Fvegcale.com%2Fhome%2F
 [Kotlin]: https://img.shields.io/badge/Kotlin-0095D5?&style=for-the-badge&logo=kotlin&logoColor=white
 [LinkedIn]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+[MockServer]: https://img.shields.io/badge/MockServer-black?style=for-the-badge&logoColor=white
+[Navigation]: https://img.shields.io/badge/Navigation-3DDC84?style=for-the-badge
 [Retrofit]: https://img.shields.io/badge/retrofit-%2348b983?style=for-the-badge&link=https%3A%2F%2Fvegcale.com%2Fhome%2F
 [Twitter]: https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white
 [Wantedly]: https://img.shields.io/badge/wantedly-blue?style=for-the-badge&link=https%3A%2F%2Fvegcale.com%2Fhome%2F
@@ -76,6 +82,8 @@ Nakao
 [Hilt-url]: https://dagger.dev/hilt/
 [Kotlin-url]: https://kotlinlang.org/docs/android-overview.html
 [LinkedIn-url]: https://www.linkedin.com/in/kisho-nakao/
+[MockServer-url]: https://www.mock-server.com/mock_server/getting_started.html
+[Navigation-url]: https://developer.android.com/guide/navigation/get-started?hl=ja
 [Retrofit-url]: https://square.github.io/retrofit/
 [Twitter-url]: https://twitter.com/@OCL89894812
 [vegcale-blog-url]: https://vegcale.com/home/

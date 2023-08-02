@@ -35,7 +35,7 @@ class RetrofitUsgsEarthquakeNetwork @Inject constructor(): UsgsEarthquakeApi {
 
     /**
      * RetrofitEarthquakeNetworkクラスがEarthquakeNetworkDataSourceを継承しているため、
-     * getInfo(limit: String): List<UsgsEarthquakeInfo>をオーバーライドする必要がある。
+     * getInfo(limit: String): Lists<UsgsEarthquakeInfo>をオーバーライドする必要がある。
      */
     override suspend fun getInfo(format:String, limit: Int, order: String): UsgsEarthquakeInfo {
         return retrofitUsgsEarthquakeNetworkApi.getInfo(format, limit, order)

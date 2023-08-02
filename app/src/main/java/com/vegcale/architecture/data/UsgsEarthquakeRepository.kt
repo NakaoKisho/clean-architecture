@@ -7,7 +7,12 @@ import javax.inject.Inject
 class UsgsEarthquakeRepository @Inject constructor(
     private val network: UsgsEarthquakeApi
 ) {
-    suspend fun getInfo(format:String, limit: Int, order: String): UsgsEarthquakeInfo {
-        return network.getInfo(format, limit, order)
+    suspend fun getInfo(format:String, limit: Int, order: String): Result<UsgsEarthquakeInfo> {
+        return try {
+            val data = network.getInfo(format, limit, order)
+            Result.Success(data)
+        } catch (e: Exception) {
+            Result.Error(e)
+        }
     }
 }

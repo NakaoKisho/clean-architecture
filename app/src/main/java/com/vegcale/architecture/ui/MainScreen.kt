@@ -22,6 +22,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import com.vegcale.architecture.data.model.EarthquakeInfo
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 
@@ -51,7 +52,9 @@ internal fun MainScreen(
         BottomSheetScaffold(
             sheetContent = {
                 Box(
-                    Modifier.fillMaxWidth().height(128.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .height(128.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text("Swipe up to expand sheet")
@@ -70,8 +73,9 @@ internal fun MainScreen(
                 uiSettings = googleMapUiSettings,
             ) {
                 items.forEach {
+                    val markerState = rememberMarkerState(position = LatLng(it.latitude, it.longitude))
                     Marker(
-                        position = LatLng(it.latitude, it.longitude),
+                        state = markerState,
                         title = it.place,
                         snippet = it.place
                     )

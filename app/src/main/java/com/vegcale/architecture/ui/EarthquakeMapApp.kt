@@ -5,18 +5,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.vegcale.architecture.navigation.List
+import com.vegcale.architecture.navigation.EmpNavHost
 import com.vegcale.architecture.navigation.Map
-import com.vegcale.architecture.navigation.Settings
-import com.vegcale.architecture.navigation.TopLevelDestination
+import com.vegcale.architecture.navigation.navigateSingleTopTo
 import com.vegcale.architecture.navigation.tabRowScreens
 import com.vegcale.architecture.ui.components.EarthquakeMapTopAppBar
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
@@ -25,33 +21,25 @@ import com.vegcale.architecture.ui.theme.ArchitectureTheme
 @Composable
 fun EarthquakeMapApp() {
     ArchitectureTheme {
-        var currentScreen: TopLevelDestination by remember { mutableStateOf(Map) }
         val navController = rememberNavController()
+        val currentBackStack by navController.currentBackStackEntryAsState()
+        val currentDestination = currentBackStack?.destination
+        val currentScreen = tabRowScreens.find { it.route == currentDestination?.route } ?: Map
 
         Scaffold(
             topBar = {
                 EarthquakeMapTopAppBar(
                     allScreens = tabRowScreens,
-                    onTabSelected = { screen -> currentScreen = screen },
-                    currentScreen = currentScreen
+                    onTabSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
+                    currentScreen = currentScreen,
+                    Modifier.testTag("EmpTopAppBar")
                 )
             }
         ){ innerPadding ->
-            NavHost(
+            EmpNavHost(
                 navController = navController,
-                startDestination = Map.route,
                 modifier = Modifier.padding(innerPadding)
-            ) {
-                composable(route = Map.route) {
-                    Map.screen()
-                }
-                composable(route = Map.route) {
-                    List.screen()
-                }
-                composable(route = Map.route) {
-                    Settings.screen()
-                }
-            }
+            )
         }
     }
 }

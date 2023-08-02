@@ -1,0 +1,1174 @@
+[
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 120,
+        "latitude": 40.2,
+        "longitude": 140.6,
+        "magnitude": 4.4,
+        "name": "秋田県内陸北部"
+      },
+      "maxScale": 10,
+      "time": "2023/08/01 22:07:00"
+    },
+    "id": "64c9046c51d38bb17b2e849b",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/08/01 22:11:07",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "階上町道仏",
+        "isArea": false,
+        "pref": "青森県",
+        "scale": 10
+      },
+      {
+        "addr": "宮古市田老",
+        "isArea": false,
+        "pref": "岩手県",
+        "scale": 10
+      },
+      {
+        "addr": "普代村銅屋",
+        "isArea": false,
+        "pref": "岩手県",
+        "scale": 10
+      },
+      {
+        "addr": "盛岡市薮川",
+        "isArea": false,
+        "pref": "岩手県",
+        "scale": 10
+      },
+      {
+        "addr": "気仙沼市笹が陣",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "石巻市桃生町",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "由利本荘市岩城内道川",
+        "isArea": false,
+        "pref": "秋田県",
+        "scale": 10
+      },
+      {
+        "addr": "にかほ市平沢",
+        "isArea": false,
+        "pref": "秋田県",
+        "scale": 10
+      },
+      {
+        "addr": "北秋田市新田目",
+        "isArea": false,
+        "pref": "秋田県",
+        "scale": 10
+      },
+      {
+        "addr": "大仙市高梨",
+        "isArea": false,
+        "pref": "秋田県",
+        "scale": 10
+      },
+      {
+        "addr": "秋田美郷町六郷東根",
+        "isArea": false,
+        "pref": "秋田県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/08/01 22:11:08.865",
+    "timestamp": {
+      "convert": "2023/08/01 22:11:08.858",
+      "register": "2023/08/01 22:11:08.865"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 20,
+        "latitude": 37.5,
+        "longitude": 141.3,
+        "magnitude": 3.8,
+        "name": "福島県沖"
+      },
+      "maxScale": 10,
+      "time": "2023/08/01 21:06:00"
+    },
+    "id": "64c8f5bc51d38bb17b2e849a",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/08/01 21:08:27",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "南相馬市原町区高見町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "南相馬市鹿島区西町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "楢葉町北田",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "浪江町幾世橋",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/08/01 21:08:28.489",
+    "timestamp": {
+      "convert": "2023/08/01 21:08:28.482",
+      "register": "2023/08/01 21:08:28.489"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 30,
+        "latitude": 37,
+        "longitude": 141.7,
+        "magnitude": 4.3,
+        "name": "福島県沖"
+      },
+      "maxScale": 20,
+      "time": "2023/08/01 17:38:00"
+    },
+    "id": "64c8c54851d38bb17b2e8499",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/08/01 17:41:43",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "角田市角田",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 20
+      },
+      {
+        "addr": "岩沼市桜",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 20
+      },
+      {
+        "addr": "山元町浅生原",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 20
+      },
+      {
+        "addr": "白石市亘理町",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "名取市増田",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "蔵王町円田",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "大河原町新南",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "柴田町船岡",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "宮城川崎町前川",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "亘理町悠里",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "登米市中田町",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "大崎市田尻",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "仙台宮城野区五輪",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "仙台若林区遠見塚",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "石巻市桃生町",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "塩竈市今宮町",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "松島町高城",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "利府町利府",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "白河市新白河",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 20
+      },
+      {
+        "addr": "白河市郭内",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "白河市大信",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "田村市大越町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 20
+      },
+      {
+        "addr": "田村市船引町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "田村市常葉町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "田村市都路町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "田村市滝根町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "福島伊達市霊山町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 20
+      },
+      {
+        "addr": "福島伊達市梁川町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "福島伊達市月舘町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "玉川村小高",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 20
+      },
+      {
+        "addr": "福島市花園町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "郡山市朝日",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "郡山市開成",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "郡山市湖南町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "須賀川市八幡山",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "須賀川市岩瀬支所",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "須賀川市八幡町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "二本松市金色",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "二本松市油井",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "二本松市針道",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "本宮市本宮",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "桑折町谷地",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "国見町藤田",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "川俣町五百田",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "大玉村南小屋",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "大玉村玉井",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "鏡石町不時沼",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "天栄村下松本",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "西郷村熊倉",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "泉崎村泉崎",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "棚倉町棚倉中居野",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "石川町長久保",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "浅川町浅川",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "小野町中通",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "小野町小野新町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "いわき市三和町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 20
+      },
+      {
+        "addr": "葛尾村落合落合",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 20
+      },
+      {
+        "addr": "相馬市中村",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "南相馬市原町区三島町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "南相馬市鹿島区栃窪",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "南相馬市原町区高見町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "楢葉町北田",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "富岡町本岡",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "川内村上川内小山平",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "川内村上川内早渡",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "大熊町野上",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "大熊町大川原",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "双葉町長塚",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "浪江町幾世橋",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "新地町谷地小屋",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "飯舘村伊丹沢",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "米沢市アルカディア",
+        "isArea": false,
+        "pref": "山形県",
+        "scale": 10
+      },
+      {
+        "addr": "水戸市内原町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "笠間市石井",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/08/01 17:41:44.079",
+    "timestamp": {
+      "convert": "2023/08/01 17:41:44.065",
+      "register": "2023/08/01 17:41:44.079"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 0,
+        "latitude": 37.1,
+        "longitude": 139.4,
+        "magnitude": 1.9,
+        "name": "福島県会津"
+      },
+      "maxScale": 10,
+      "time": "2023/08/01 06:39:00"
+    },
+    "id": "64c82ab951d38bb17b2e8498",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/08/01 06:42:16",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "檜枝岐村上河原",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/08/01 06:42:17.485",
+    "timestamp": {
+      "convert": "2023/08/01 06:42:17.48",
+      "register": "2023/08/01 06:42:17.485"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 10,
+        "latitude": 39.6,
+        "longitude": 143.4,
+        "magnitude": 4.7,
+        "name": "三陸沖"
+      },
+      "maxScale": 10,
+      "time": "2023/08/01 06:12:00"
+    },
+    "id": "64c824a751d38bb17b2e8497",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/08/01 06:16:22",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "宮古市田老",
+        "isArea": false,
+        "pref": "岩手県",
+        "scale": 10
+      },
+      {
+        "addr": "盛岡市薮川",
+        "isArea": false,
+        "pref": "岩手県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/08/01 06:16:23.407",
+    "timestamp": {
+      "convert": "2023/08/01 06:16:23.403",
+      "register": "2023/08/01 06:16:23.407"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 50,
+        "latitude": 36.2,
+        "longitude": 139.8,
+        "magnitude": 3.5,
+        "name": "茨城県南部"
+      },
+      "maxScale": 10,
+      "time": "2023/08/01 06:08:00"
+    },
+    "id": "64c8237851d38bb17b2e8496",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/08/01 06:11:19",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "水戸市金町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "水戸市千波町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "水戸市内原町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "日立市助川小学校",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "常陸太田市町屋町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "笠間市石井",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "笠間市下郷",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "笠間市笠間",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "常陸大宮市北町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "常陸大宮市山方",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "土浦市常名",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "結城市中央町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "筑西市舟生",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "筑西市門井",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "筑西市二木成",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "桜川市岩瀬",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "桜川市真壁",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "桜川市羽田",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "宇都宮市明保野町",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "宇都宮市中里町",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "栃木市藤岡町藤岡",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "佐野市中町",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "佐野市高砂町",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "小山市神鳥谷",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "小山市中央町",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "下野市田中",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "下野市笹原",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "益子町益子",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "壬生町壬生甲",
+        "isArea": false,
+        "pref": "栃木県",
+        "scale": 10
+      },
+      {
+        "addr": "板倉町板倉",
+        "isArea": false,
+        "pref": "群馬県",
+        "scale": 10
+      },
+      {
+        "addr": "加須市騎西",
+        "isArea": false,
+        "pref": "埼玉県",
+        "scale": 10
+      },
+      {
+        "addr": "加須市大利根",
+        "isArea": false,
+        "pref": "埼玉県",
+        "scale": 10
+      },
+      {
+        "addr": "久喜市下早見",
+        "isArea": false,
+        "pref": "埼玉県",
+        "scale": 10
+      },
+      {
+        "addr": "宮代町笠原",
+        "isArea": false,
+        "pref": "埼玉県",
+        "scale": 10
+      },
+      {
+        "addr": "野田市鶴奉",
+        "isArea": false,
+        "pref": "千葉県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/08/01 06:11:20.568",
+    "timestamp": {
+      "convert": "2023/08/01 06:11:20.562",
+      "register": "2023/08/01 06:11:20.568"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 10,
+        "latitude": 36.8,
+        "longitude": 140.6,
+        "magnitude": 3.6,
+        "name": "茨城県北部"
+      },
+      "maxScale": 20,
+      "time": "2023/07/31 20:56:00"
+    },
+    "id": "64c7a1f751d38bb17b2e8495",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/07/31 20:58:46",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "常陸太田市大中町",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 20
+      },
+      {
+        "addr": "日立市助川小学校",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "日立市十王町友部",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "高萩市安良川",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "笠間市石井",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "常陸大宮市山方",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "大子町池田",
+        "isArea": false,
+        "pref": "茨城県",
+        "scale": 10
+      },
+      {
+        "addr": "白河市郭内",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "矢祭町戸塚",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      },
+      {
+        "addr": "いわき市錦町",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/07/31 20:58:47.589",
+    "timestamp": {
+      "convert": "2023/07/31 20:58:47.579",
+      "register": "2023/07/31 20:58:47.589"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 20,
+        "latitude": 35.3,
+        "longitude": 138.5,
+        "magnitude": 2.4,
+        "name": "山梨県中・西部"
+      },
+      "maxScale": 10,
+      "time": "2023/07/31 20:08:00"
+    },
+    "id": "64c7973e51d38bb17b2e8494",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/07/31 20:13:00",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "山梨南部町栄小学校",
+        "isArea": false,
+        "pref": "山梨県",
+        "scale": 10
+      },
+      {
+        "addr": "富士宮市野中",
+        "isArea": false,
+        "pref": "静岡県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/07/31 20:13:02.044",
+    "timestamp": {
+      "convert": "2023/07/31 20:13:01.909",
+      "register": "2023/07/31 20:13:02.044"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 60,
+        "latitude": 37.7,
+        "longitude": 141.7,
+        "magnitude": 4.1,
+        "name": "福島県沖"
+      },
+      "maxScale": 10,
+      "time": "2023/07/30 11:17:00"
+    },
+    "id": "64c5c8fe51d38bb17b2e8493",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/07/30 11:20:46",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "石巻市桃生町",
+        "isArea": false,
+        "pref": "宮城県",
+        "scale": 10
+      },
+      {
+        "addr": "楢葉町北田",
+        "isArea": false,
+        "pref": "福島県",
+        "scale": 10
+      }
+    ],
+    "time": "2023/07/30 11:20:46.945",
+    "timestamp": {
+      "convert": "2023/07/30 11:20:46.939",
+      "register": "2023/07/30 11:20:46.945"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  },
+  {
+    "code": 551,
+    "earthquake": {
+      "domesticTsunami": "None",
+      "foreignTsunami": "Unknown",
+      "hypocenter": {
+        "depth": 10,
+        "latitude": 43.7,
+        "longitude": 144.5,
+        "magnitude": 2.6,
+        "name": "網走地方"
+      },
+      "maxScale": 20,
+      "time": "2023/07/30 06:02:00"
+    },
+    "id": "64c57efb51d38bb17b2e8492",
+    "issue": {
+      "correct": "None",
+      "source": "気象庁",
+      "time": "2023/07/30 06:04:58",
+      "type": "DetailScale"
+    },
+    "points": [
+      {
+        "addr": "弟子屈町サワンチサップ",
+        "isArea": false,
+        "pref": "北海道",
+        "scale": 20
+      }
+    ],
+    "time": "2023/07/30 06:04:59.569",
+    "timestamp": {
+      "convert": "2023/07/30 06:04:59.563",
+      "register": "2023/07/30 06:04:59.569"
+    },
+    "user_agent": "jmaxml-seis-parser-go, relay, register-api",
+    "ver": "20220813"
+  }
+]
