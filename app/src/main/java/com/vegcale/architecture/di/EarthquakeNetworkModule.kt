@@ -37,6 +37,9 @@ abstract class EarthquakeApiModule {
 object EarthquakeNetworkModule {
     private const val UsgsBaseUrl = BuildConfig.USGS_EARTHQUAKE_API_URL
     @Provides
+    @Named("usgsUrl")
+    fun provideUsgsString() = UsgsBaseUrl
+    @Provides
     fun provideUsgsEarthquakeRetrofit(): RetrofitUsgsEarthquakeNetworkApi {
         return Retrofit
             .Builder()
@@ -48,7 +51,7 @@ object EarthquakeNetworkModule {
     private const val P2pBaseUrl = BuildConfig.P2P_QUAKE_API_URL
     @Provides
     @Named("p2pUrl")
-    fun provideString() = P2pBaseUrl
+    fun provideP2pString() = P2pBaseUrl
     @Provides
     fun provideP2pquakeRetrofit(): RetrofitP2pquakeNetworkApi {
         return Retrofit
