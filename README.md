@@ -35,9 +35,9 @@ An android app for understanding the [app architecture][Android-architecture-en-
 * [![Earthquake Catalog from USGS science for a changing world][Earthquake-catalog-api]][Earthquake-catalog-web-api-url]
 * [![Hilt][Hilt]][Hilt-url]
 * [![Kotlin][Kotlin]][Kotlin-url]
+* [![MockServer][MockServer]][MockServer-url]
 * [![Navigation][Navigation]][Navigation-url]
 * [![Retrofit][Retrofit]][Retrofit-url]
-* [![MockServer][MockServer]][MockServer-url]
 <p align="right"><a href="#readme-top">back to top</a></p>
 
 ## 事前作業 - Prerequisites
