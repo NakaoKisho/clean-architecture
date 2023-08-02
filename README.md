@@ -43,6 +43,7 @@ An android app for understanding the [app architecture][Android-architecture-en-
 ## 事前作業 - Prerequisites
 * local.properties
   ```
+  GOOGLE_MAPS_API_KEY=YOUR_API_KEY
   USGS_EARTHQUAKE_API_URL=https://earthquake.usgs.gov/fdsnws/event/1/
   P2P_QUAKE_API_URL=https://api.p2pquake.net/v2/history/
   ```
