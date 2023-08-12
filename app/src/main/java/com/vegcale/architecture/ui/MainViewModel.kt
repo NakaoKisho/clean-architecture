@@ -18,10 +18,6 @@ import kotlinx.coroutines.flow.stateIn
 import java.io.IOException
 import javax.inject.Inject
 
-/**
- * @HiltViewModel でアノテーションをすることで、Hiltにインスタンス化の方法を
- * @Inject でアノテーションをすることで、Hiltにクラスのインスタンス化する方法を提供します。
- */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     getLatestEarthquakeInfoUseCase: GetLatestEarthquakeInfoUseCase,

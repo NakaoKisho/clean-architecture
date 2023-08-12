@@ -24,11 +24,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.vegcale.architecture.navigation.TopLevelDestination
 
-private val TabHeight = 56.dp
-private const val InactiveTabOpacity = 0.60f
-private const val TabFadeInAnimationDuration = 150
-private const val TabFadeInAnimationDelay = 100
-private const val TabFadeOutAnimationDuration = 100
+private const val INACTIVE_TAB_OPACITY = 0.60f
+private const val TAB_FADE_IN_ANIMATION_DURATION = 150
+private const val TAB_FADE_IN_ANIMATION_DELAY = 100
+private const val TAB_FADE_OUT_ANIMATION_DURATION = 100
 
 @Composable
 fun EarthquakeMapTopAppBar(
@@ -37,11 +36,12 @@ fun EarthquakeMapTopAppBar(
     currentScreen: TopLevelDestination,
     modifier: Modifier = Modifier
 ) {
+    val tabHeight = 56.dp
     val color = MaterialTheme.colorScheme.onPrimary
 
     Surface(
         modifier = modifier
-            .height(TabHeight)
+            .height(tabHeight)
             .fillMaxWidth(),
         color = MaterialTheme.colorScheme.primary
     ) {
@@ -61,20 +61,21 @@ fun EarthquakeMapTopAppBar(
                 ) {
                     val durationMillis =
                         if (currentScreen == screen) {
-                            TabFadeInAnimationDuration
+                            TAB_FADE_IN_ANIMATION_DURATION
                         } else {
-                            TabFadeOutAnimationDuration
+                            TAB_FADE_OUT_ANIMATION_DURATION
                         }
                     val animSpec = remember {
                         tween<Color>(
                             durationMillis = durationMillis,
                             easing = LinearEasing,
-                            delayMillis = TabFadeInAnimationDelay
+                            delayMillis = TAB_FADE_IN_ANIMATION_DELAY
                         )
                     }
                     val tabTintColor by animateColorAsState(
-                        targetValue = if (currentScreen == screen) color else color.copy(alpha = InactiveTabOpacity),
-                        animationSpec = animSpec
+                        targetValue = if (currentScreen == screen) color else color.copy(alpha = INACTIVE_TAB_OPACITY),
+                        animationSpec = animSpec,
+                        label = "Tab tint color change"
                     )
                     Icon(
                         imageVector = screen.icon,
