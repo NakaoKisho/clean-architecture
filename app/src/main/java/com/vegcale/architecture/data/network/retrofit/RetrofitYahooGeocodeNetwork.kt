@@ -13,6 +13,7 @@ enum class YahooGeocodeOutput {
     XML,
     JSON
 }
+
 interface RetrofitYahooGeocodeNetworkApi {
     @GET
     suspend fun getInfo(
