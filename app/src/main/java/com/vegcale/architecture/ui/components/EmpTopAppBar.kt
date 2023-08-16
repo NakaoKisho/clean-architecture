@@ -30,7 +30,7 @@ private const val TAB_FADE_IN_ANIMATION_DELAY = 100
 private const val TAB_FADE_OUT_ANIMATION_DURATION = 100
 
 @Composable
-fun EarthquakeMapTopAppBar(
+fun EmpTopAppBar(
     allScreens: List<TopLevelDestination>,
     onTabSelected: (TopLevelDestination) -> Unit,
     currentScreen: TopLevelDestination,

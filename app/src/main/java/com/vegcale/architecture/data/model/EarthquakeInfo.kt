@@ -1,6 +1,7 @@
 package com.vegcale.architecture.data.model
 
 import androidx.compose.runtime.saveable.mapSaver
+import java.io.Serializable
 
 data class EarthquakeInfo(
     val datetime: String,
@@ -9,8 +10,16 @@ data class EarthquakeInfo(
     val longitude: Double,
     val magnitude: Double,
     val depth: Int,
+    val points: List<Points>,
 )
 
+data class Points(
+    val place: String?,
+    val address: String?,
+    val scale: Byte?,
+): Serializable
+
+@Suppress("UNCHECKED_CAST")
 val EarthquakeInfoMapSaver = mapSaver(
     save = {
         mapOf(
@@ -19,7 +28,8 @@ val EarthquakeInfoMapSaver = mapSaver(
             "latitude" to it.latitude,
             "longitude" to it.longitude,
             "magnitude" to it.magnitude,
-            "depth" to it.depth
+            "depth" to it.depth,
+            "points" to it.points
         )
     },
     restore = {
@@ -30,6 +40,7 @@ val EarthquakeInfoMapSaver = mapSaver(
             longitude = it["longitude"] as Double,
             magnitude = it["magnitude"] as Double,
             depth = it["depth"] as Int,
+            points = it["points"] as List<Points>,
         )
     }
 )

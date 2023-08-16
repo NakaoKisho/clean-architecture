@@ -45,7 +45,7 @@ data class P2pquakeInfoPoint(
 fun P2pquakeInfoEarthquake.getDatetime(): String {
     val dataFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")
     val localDatetime = LocalDateTime.parse(time, dataFormatter)
-    val displayFormatter = DateTimeFormatter.ofPattern("yyyy年 MM月 dd日 HH:mm")
+    val displayFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
 
     return localDatetime.format(displayFormatter)
 }

@@ -14,7 +14,7 @@ import com.vegcale.architecture.navigation.EmpNavHost
 import com.vegcale.architecture.navigation.Map
 import com.vegcale.architecture.navigation.navigateSingleTopTo
 import com.vegcale.architecture.navigation.tabRowScreens
-import com.vegcale.architecture.ui.components.EarthquakeMapTopAppBar
+import com.vegcale.architecture.ui.components.EmpTopAppBar
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,7 +28,7 @@ fun EarthquakeMapApp() {
 
         Scaffold(
             topBar = {
-                EarthquakeMapTopAppBar(
+                EmpTopAppBar(
                     allScreens = tabRowScreens,
                     onTabSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
                     currentScreen = currentScreen,

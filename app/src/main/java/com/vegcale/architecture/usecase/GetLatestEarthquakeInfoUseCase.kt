@@ -4,6 +4,7 @@ import com.vegcale.architecture.data.P2pquakeRepository
 import com.vegcale.architecture.data.Result
 import com.vegcale.architecture.data.UsgsEarthquakeRepository
 import com.vegcale.architecture.data.model.EarthquakeInfo
+import com.vegcale.architecture.data.model.Points
 import com.vegcale.architecture.data.model.getDatetime
 import com.vegcale.architecture.data.model.getDepth
 import com.vegcale.architecture.data.succeeded
@@ -32,6 +33,7 @@ class GetLatestEarthquakeInfoUseCase @Inject constructor(
                                 feature.geometry.coordinates[0],
                                 feature.properties.mag,
                                 feature.geometry.getDepth(),
+                                listOf(Points("","",1))
                             )
                         }
                 }
@@ -48,6 +50,13 @@ class GetLatestEarthquakeInfoUseCase @Inject constructor(
                                 p2pquakeInfo.earthquake.hypocenter.longitude,
                                 p2pquakeInfo.earthquake.hypocenter.magnitude,
                                 p2pquakeInfo.earthquake.hypocenter.depth,
+                                p2pquakeInfo.points.map {
+                                    Points(
+                                        place = it.pref,
+                                        address = it.addr,
+                                        scale = it.scale
+                                    )
+                                }
                             )
                         }
                 }

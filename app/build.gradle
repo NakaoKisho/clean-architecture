@@ -66,9 +66,6 @@ android {
         test {
             resources.srcDirs += ['src/test/res']
         }
-//        androidTest {
-//            resources.srcDirs += ['src/androidTest/resources']
-//        }
     }
 }
 
@@ -137,6 +134,9 @@ dependencies {
 
     // File Read
     testImplementation "commons-io:commons-io:2.6"
+
+    // Kotlinx Datetime
+    implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 }
 
 kapt {

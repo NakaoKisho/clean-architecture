@@ -1,8 +1,8 @@
 package com.vegcale.architecture.data.model
 
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.Instant.Companion.fromEpochMilliseconds
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * 地震情報のネットワーク定義
@@ -66,10 +66,16 @@ data class UsgsEarthquakeInfoGeometry(
 )
 
 fun UsgsEarthquakeInfoProperties.getDatetime(): String {
-    val localDatetime = LocalDateTime.ofEpochSecond(time, 0, ZoneOffset.UTC)
-    val formatter = DateTimeFormatter.ofPattern("yyyy年 MM月 dd日 hh:mm")
+    val milliseconds = fromEpochMilliseconds(time)
+    val localDatetime = milliseconds.toLocalDateTime(TimeZone.UTC)
+    val year = localDatetime.year.toString()
+    val twoDigits = "%02d"
+    val month = twoDigits.format(localDatetime.monthNumber)
+    val day = twoDigits.format(localDatetime.dayOfMonth)
+    val hour = twoDigits.format(localDatetime.hour)
+    val minute = twoDigits.format(localDatetime.minute)
 
-    return localDatetime.format(formatter)
+    return "${year}/${month}/${day} ${hour}:${minute}"
 }
 
 fun UsgsEarthquakeInfoGeometry.getDepth() = coordinates[2].toInt()
