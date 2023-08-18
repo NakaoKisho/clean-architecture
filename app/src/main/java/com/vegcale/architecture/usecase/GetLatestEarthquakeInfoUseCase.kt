@@ -1,12 +1,16 @@
 package com.vegcale.architecture.usecase
 
+import com.vegcale.architecture.BuildConfig
 import com.vegcale.architecture.data.P2pquakeRepository
 import com.vegcale.architecture.data.Result
 import com.vegcale.architecture.data.UsgsEarthquakeRepository
+import com.vegcale.architecture.data.YahooGeocodeRepository
 import com.vegcale.architecture.data.model.EarthquakeInfo
 import com.vegcale.architecture.data.model.Points
 import com.vegcale.architecture.data.model.getDatetime
 import com.vegcale.architecture.data.model.getDepth
+import com.vegcale.architecture.data.model.getLatitude
+import com.vegcale.architecture.data.model.getLongitude
 import com.vegcale.architecture.data.succeeded
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +20,7 @@ import javax.inject.Inject
 class GetLatestEarthquakeInfoUseCase @Inject constructor(
     private val usgsEarthquakeRepository: UsgsEarthquakeRepository,
     private val p2pquakeRepository: P2pquakeRepository,
+    private val yahooGeocodeRepository: YahooGeocodeRepository,
 ) {
     operator fun invoke(): Flow<List<EarthquakeInfo>> {
         return flow {
@@ -33,13 +38,14 @@ class GetLatestEarthquakeInfoUseCase @Inject constructor(
                                 feature.geometry.coordinates[0],
                                 feature.properties.mag,
                                 feature.geometry.getDepth(),
-                                listOf(Points("","",1))
+                                listOf(Points("",0.0,0.0, 10))
                             )
                         }
                 }
 
                 val p2pResult = p2pquakeRepository.getInfo(10, 0)
                 var p2pList: List<EarthquakeInfo> = emptyList()
+                val yahooApiAppId = BuildConfig.YAHOO_CLIENT_ID
                 if (p2pResult.succeeded) {
                     p2pList = (p2pResult as Result.Success).data
                         .map { p2pquakeInfo ->
@@ -51,11 +57,34 @@ class GetLatestEarthquakeInfoUseCase @Inject constructor(
                                 p2pquakeInfo.earthquake.hypocenter.magnitude,
                                 p2pquakeInfo.earthquake.hypocenter.depth,
                                 p2pquakeInfo.points.map {
-                                    Points(
-                                        place = it.pref,
-                                        address = it.addr,
-                                        scale = it.scale
+                                    val yahooGeocodeResult = yahooGeocodeRepository.getInfo(
+                                        appId = yahooApiAppId,
+                                        query = it.addr
                                     )
+
+                                    if (
+                                        yahooGeocodeResult.succeeded &&
+                                        (yahooGeocodeResult as Result.Success).data.resultInfo != null &&
+                                        yahooGeocodeResult.data.features != null
+                                    ) {
+                                        val geometry = yahooGeocodeResult
+                                            .data
+                                            .features[0]
+                                            .geometry
+                                        Points(
+                                            place = it.addr,
+                                            latitude = geometry.getLatitude(),
+                                            longitude = geometry.getLongitude(),
+                                            scale = it.scale
+                                        )
+                                    } else {
+                                        Points(
+                                            place = null,
+                                            latitude = null,
+                                            longitude = null,
+                                            scale = null
+                                        )
+                                    }
                                 }
                             )
                         }

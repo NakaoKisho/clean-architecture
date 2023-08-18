@@ -1,51 +1,63 @@
 package com.vegcale.architecture.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class YahooGeocodeInfo(
-    val resultInfo: YahooGeocodeInfoResultInfo,
-    val features: List<YahooGeocodeInfoFeature>
+    @SerializedName("ResultInfo") val resultInfo: YahooGeocodeInfoResultInfo?,
+    @SerializedName("Feature") val features: List<YahooGeocodeInfoFeature>?
 )
 
 data class YahooGeocodeInfoResultInfo(
-    val count: Int,
-    val total: Int,
-    val start: Int,
-    val status: Int,
-    val description: String,
-    val copyright: String,
-    val latency: Float
+    @SerializedName("Count") val count: Int,
+    @SerializedName("Total") val total: Int,
+    @SerializedName("Start") val start: Int,
+    @SerializedName("Status") val status: Int,
+    @SerializedName("Description") val description: String,
+    @SerializedName("Copyright") val copyright: String,
+    @SerializedName("Latency") val latency: Float
 )
 
 data class YahooGeocodeInfoFeature(
-    val id: String,
-    val gid: String,
-    val name: String,
-    val geometry: YahooGeocodeInfoGeometry,
-    val category: List<String>,
-    val description: String,
-    val style: List<String>,
-    val property: YahooGeocodeInfoProperty
+    @SerializedName("Id") val id: String,
+    @SerializedName("Gid") val gid: String,
+    @SerializedName("Name") val name: String,
+    @SerializedName("Geometry") val geometry: YahooGeocodeInfoGeometry,
+    @SerializedName("Category") val category: List<String>,
+    @SerializedName("Description") val description: String,
+    @SerializedName("Style") val style: List<String>,
+    @SerializedName("Property") val property: YahooGeocodeInfoProperty
 )
 
 data class YahooGeocodeInfoGeometry(
-    val type: String,
-    val coordinates: String,
-    val boundingBox: String
+    @SerializedName("Type") val type: String,
+    @SerializedName("Coordinates") val coordinates: String,
+    @SerializedName("BoundingBox") val boundingBox: String
 )
 
 data class YahooGeocodeInfoProperty(
-    val uid: String,
-    val cassetteId: String,
-    val kana: String,
-    val country: YahooGeocodeInfoCountry,
-    val address: String,
-    val governmentCode: String,
-    val addressMatchingLevel: String,
-    val addressType: String,
-    val openForBusiness: String,
-    val recursiveQuery: String
+    @SerializedName("Uid") val uid: String,
+    @SerializedName("CassetteId") val cassetteId: String,
+    @SerializedName("Kana") val kana: String,
+    @SerializedName("Country") val country: YahooGeocodeInfoCountry,
+    @SerializedName("Address") val address: String,
+    @SerializedName("GovernmentCode") val governmentCode: String,
+    @SerializedName("AddressMatchingLevel") val addressMatchingLevel: String,
+    @SerializedName("AddressType") val addressType: String,
+    @SerializedName("OpenForBusiness") val openForBusiness: String,
+    @SerializedName("RecursiveQuery") val recursiveQuery: String
 )
 
 data class YahooGeocodeInfoCountry(
-    val code: String,
-    val name: String
+    @SerializedName("Code") val code: String,
+    @SerializedName("Name") val name: String
 )
+
+fun YahooGeocodeInfoGeometry.getLatitude(): Double {
+    val coordinates = coordinates.split(",")
+    return coordinates[1].toDouble()
+}
+
+fun YahooGeocodeInfoGeometry.getLongitude(): Double {
+    val coordinates = coordinates.split(",")
+    return coordinates[0].toDouble()
+}

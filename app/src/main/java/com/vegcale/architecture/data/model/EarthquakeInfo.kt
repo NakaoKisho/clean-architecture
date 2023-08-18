@@ -15,7 +15,8 @@ data class EarthquakeInfo(
 
 data class Points(
     val place: String?,
-    val address: String?,
+    val latitude: Double?,
+    val longitude: Double?,
     val scale: Byte?,
 ): Serializable
 

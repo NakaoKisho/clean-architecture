@@ -1,7 +1,6 @@
 package com.vegcale.architecture.data.network
 
 import com.vegcale.architecture.data.model.YahooGeocodeInfo
-import com.vegcale.architecture.data.network.retrofit.YahooGeocodeOutput
 
 
 interface  YahooGeocodeApi {
@@ -10,6 +9,6 @@ interface  YahooGeocodeApi {
         query: String,
         recursive: Boolean,
         result: Byte,
-        output: YahooGeocodeOutput
+        output: String
     ): YahooGeocodeInfo
 }

@@ -77,7 +77,7 @@ internal fun MainScreen(
                     longitude = 0.0,
                     magnitude = 0.0,
                     depth = 0,
-                    points = listOf(Points("","",0))
+                    points = listOf(Points("",0.0,0.0, 10))
                 )
             )
         }
@@ -158,7 +158,7 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                     val cameraPositionState = rememberCameraPositionState(
                         inputs = arrayOf(latLng.toString()),
                     ) {
-                        position = CameraPosition.fromLatLngZoom(latLng, 6.5f)
+                        position = CameraPosition.fromLatLngZoom(latLng, 11.0f)
                     }
                     val googleMapUiSettings = DefaultDetailMapUiSettings
 
@@ -176,23 +176,28 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                         val markerImage =
                             BitmapHelper().vectorToBitmap(id = R.drawable.baseline_epicenter_24)
 
-                        // Marker for hypocenter
+                        // Marker for the hypocenter
                         Marker(
                             state = hypocenterMarkerState,
                             icon = markerImage,
                             title = stringResource(R.string.hypocenter)
                         )
 
-                        itemInfo.points.forEach {
+                        // Marker for place observes the earthquake
+                        itemInfo.points.forEach { point ->
+                            if (point.latitude == null || point.longitude == null) return@forEach
+
+                            val observationPlaceLatLng = LatLng(point.latitude, point.longitude)
                             val observationPlaceMarkerState = rememberMarkerState(
-                                inputs = arrayOf(it.address),
-                                position = latLng
+                                inputs = arrayOf(observationPlaceLatLng.toString()),
+                                position = observationPlaceLatLng
                             )
 
                             Marker(
                                 state = observationPlaceMarkerState,
                                 icon = markerImage,
-                                title = stringResource(R.string.hypocenter)
+                                snippet = point.scale.toString(),
+                                title = point.place
                             )
                         }
                     }
@@ -228,7 +233,7 @@ fun BottomSheetContentPreview() {
             longitude = 10.1,
             magnitude = 5.0,
             depth = 10,
-            points = listOf(Points("テスト場所","テスト住所",1))
+            points = listOf(Points("テスト場所",0.0,0.0, 10))
         )
         BottomSheetContent(earthquakeInfo)
     }
