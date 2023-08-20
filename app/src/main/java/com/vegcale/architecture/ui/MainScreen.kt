@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.BottomSheetDefaults
@@ -154,11 +153,11 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                     .fillMaxSize()
             ) {
                 item {
-                    val latLng = LatLng(itemInfo.latitude, itemInfo.longitude)
+                    val epicenterLatLng = LatLng(itemInfo.latitude, itemInfo.longitude)
                     val cameraPositionState = rememberCameraPositionState(
-                        inputs = arrayOf(latLng.toString()),
+                        inputs = arrayOf(epicenterLatLng.toString()),
                     ) {
-                        position = CameraPosition.fromLatLngZoom(latLng, 11.0f)
+                        position = CameraPosition.fromLatLngZoom(epicenterLatLng, 6.0f)
                     }
                     val googleMapUiSettings = DefaultDetailMapUiSettings
 
@@ -169,18 +168,18 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                         cameraPositionState = cameraPositionState,
                         uiSettings = googleMapUiSettings,
                     ) {
-                        val hypocenterMarkerState = rememberMarkerState(
-                            inputs = arrayOf(latLng.toString()),
-                            position = latLng
+                        val epicenterMarkerState = rememberMarkerState(
+                            inputs = arrayOf(epicenterLatLng.toString()),
+                            position = epicenterLatLng
                         )
-                        val markerImage =
-                            BitmapHelper().vectorToBitmap(id = R.drawable.baseline_epicenter_24)
+                        val bimapHelper = BitmapHelper()
+                        val markerImage = bimapHelper.vectorToBitmap(id = R.drawable.baseline_epicenter_24)
 
                         // Marker for the hypocenter
                         Marker(
-                            state = hypocenterMarkerState,
+                            state = epicenterMarkerState,
                             icon = markerImage,
-                            title = stringResource(R.string.hypocenter)
+                            title = stringResource(R.string.epicenter)
                         )
 
                         // Marker for place observes the earthquake
@@ -192,20 +191,92 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                                 inputs = arrayOf(observationPlaceLatLng.toString()),
                                 position = observationPlaceLatLng
                             )
+                            val (seismicIntensity, seismicIntensityVectorId) = when(point.scale) {
+                                10.toByte() -> stringResource(R.string.intensity_of_one) to R.drawable.intensity_of_one
+                                20.toByte() -> stringResource(R.string.intensity_of_two) to R.drawable.intensity_of_two
+                                30.toByte() -> stringResource(R.string.intensity_of_three) to R.drawable.intensity_of_three
+                                40.toByte() -> stringResource(R.string.intensity_of_four) to R.drawable.intensity_of_four
+                                45.toByte() -> stringResource(R.string.intensity_of_lower_five) to R.drawable.intensity_of_lower_five
+                                46.toByte() -> stringResource(R.string.intensity_of_more_than_upper_five) to R.drawable.intensity_of_more_than_upper_five
+                                50.toByte() -> stringResource(R.string.intensity_of_upper_five) to R.drawable.intensity_of_upper_five
+                                55.toByte() -> stringResource(R.string.intensity_of_lower_six) to R.drawable.intensity_of_lower_six
+                                60.toByte() -> stringResource(R.string.intensity_of_upper_six) to R.drawable.intensity_of_upper_six
+                                else -> stringResource(R.string.intensity_of_seven) to R.drawable.intensity_of_seven
+                            }
 
                             Marker(
                                 state = observationPlaceMarkerState,
-                                icon = markerImage,
-                                snippet = point.scale.toString(),
+                                icon = bimapHelper.vectorToBitmap(id = seismicIntensityVectorId),
+                                snippet = seismicIntensity,
                                 title = point.place
                             )
                         }
                     }
                 }
-                items(10) {
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = stringResource(R.string.epicenter),
+                            modifier = Modifier.weight(1.0f)
+                        )
+                        Text(
+                            itemInfo.place,
+                            modifier = Modifier.weight(2.0f)
+                        )
+//                        val tileModifier = Modifier.weight(1.0f)
+//
+//                        EmpTile(
+//                            detailFontSize = 24.sp,
+//                            detailText = itemInfo.place,
+//                            modifier = tileModifier.background(colorResource(R.color.green_800)),
+//                            titleFontSize = 24.sp,
+//                            titleText = stringResource(R.string.epicenter)
+//                        )
+//                        EmpTile(
+//                            detailFontSize = 24.sp,
+//                            detailText = itemInfo.magnitude.toString(),
+//                            modifier = tileModifier.background(colorResource(R.color.red_800)),
+//                            titleFontSize = 24.sp,
+//                            titleText = stringResource(R.string.magnitude)
+//                        )
+                    }
+                }
+
+                item {
                     Text(
-                        modifier = Modifier.height(100.dp),
+                        text = "itemInfo.depth"
+                    )
+                    Text(
+                        text = itemInfo.depth.toString()
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "itemInfo.latitude"
+                    )
+                    Text(
                         text = itemInfo.latitude.toString()
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "itemInfo.longitude"
+                    )
+                    Text(
+                        text = itemInfo.longitude.toString()
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "itemInfo.points"
+                    )
+                    Text(
+                        text = itemInfo.points.toString()
                     )
                 }
             }

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">architecture</string>
-    <string name="hypocenter">hypocenter</string>
+    <string name="epicenter">hypocenter</string>
+    <string name="intensity_of_four">intensity of 4</string>
+    <string name="intensity_of_lower_five">intensity of lower 5</string>
+    <string name="intensity_of_lower_six">intensity of lower 6</string>
+    <string name="intensity_of_more_than_upper_five">intensity of more than upper 5</string>
+    <string name="intensity_of_one">intensity of 1</string>
+    <string name="intensity_of_seven">intensity of 7</string>
+    <string name="intensity_of_three">intensity of 3</string>
+    <string name="intensity_of_two">intensity of 2</string>
+    <string name="intensity_of_upper_five">intensity of upper 5</string>
+    <string name="intensity_of_upper_six">intensity of 6</string>
+    <string name="maximum_intensity">maximum intensity</string>
+    <string name="magnitude">magnitude</string>
 </resources>

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">architecture</string>
-    <string name="hypocenter">震源</string>
+    <string name="epicenter">震源地</string>
+    <string name="intensity_of_four">震度4</string>
+    <string name="intensity_of_lower_five">震度5弱</string>
+    <string name="intensity_of_lower_six">震度6弱</string>
+    <string name="intensity_of_more_than_upper_five">震度5弱以上</string>
+    <string name="intensity_of_one">震度1</string>
+    <string name="intensity_of_seven">震度7</string>
+    <string name="intensity_of_three">震度3</string>
+    <string name="intensity_of_two">震度2</string>
+    <string name="intensity_of_upper_five">震度5強</string>
+    <string name="intensity_of_upper_six">震度6強</string>
+    <string name="maximum_intensity">最大震度</string>
+    <string name="magnitude">マグニチュード</string>
 </resources>
