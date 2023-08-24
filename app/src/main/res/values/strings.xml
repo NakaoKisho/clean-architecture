@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">architecture</string>
+    <string name="depth">深さ</string>
     <string name="epicenter">震源地</string>
-    <string name="intensity_of_four">震度4</string>
-    <string name="intensity_of_lower_five">震度5弱</string>
-    <string name="intensity_of_lower_six">震度6弱</string>
-    <string name="intensity_of_more_than_upper_five">震度5弱以上</string>
-    <string name="intensity_of_one">震度1</string>
-    <string name="intensity_of_seven">震度7</string>
-    <string name="intensity_of_three">震度3</string>
-    <string name="intensity_of_two">震度2</string>
-    <string name="intensity_of_upper_five">震度5強</string>
-    <string name="intensity_of_upper_six">震度6強</string>
+    <string name="expand_less">詳細表示</string>
+    <string name="expand_more">詳細非表示</string>
+    <string name="seismic_intensity">震度</string>
+    <string name="seismic_intensity_level_four">4</string>
+    <string name="seismic_intensity_level_lower_five">5弱</string>
+    <string name="seismic_intensity_level_lower_six">6弱</string>
+    <string name="seismic_intensity_level_more_than_upper_five">5弱以上</string>
+    <string name="seismic_intensity_level_one">1</string>
+    <string name="seismic_intensity_level_seven">7</string>
+    <string name="seismic_intensity_level_three">3</string>
+    <string name="seismic_intensity_level_two">2</string>
+    <string name="seismic_intensity_level_upper_five">5強</string>
+    <string name="seismic_intensity_level_upper_six">6強</string>
+    <string name="seismic_intensity_of_four">震度4</string>
+    <string name="seismic_intensity_of_lower_five">震度5弱</string>
+    <string name="seismic_intensity_of_lower_six">震度6弱</string>
+    <string name="seismic_intensity_of_more_than_upper_five">震度5弱以上</string>
+    <string name="seismic_intensity_of_one">震度1</string>
+    <string name="seismic_intensity_of_seven">震度7</string>
+    <string name="seismic_intensity_of_three">震度3</string>
+    <string name="seismic_intensity_of_two">震度2</string>
+    <string name="seismic_intensity_of_upper_five">震度5強</string>
+    <string name="seismic_intensity_of_upper_six">震度6強</string>
+    <string name="latitude">緯度</string>
+    <string name="longitude">経度</string>
     <string name="maximum_intensity">最大震度</string>
     <string name="magnitude">マグニチュード</string>
+    <string name="no_data">情報なし</string>
+    <string name="observation_place_name">地点名</string>
+    <string name="observation_places_info">震度観測地点情報</string>
 </resources>

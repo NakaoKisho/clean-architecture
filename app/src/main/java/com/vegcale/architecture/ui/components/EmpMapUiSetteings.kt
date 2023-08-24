@@ -2,6 +2,19 @@ package com.vegcale.architecture.ui.components
 
 import com.google.maps.android.compose.MapUiSettings
 
+val DefaultSummaryMapUiSettings = MapUiSettings(
+    compassEnabled = true,
+    indoorLevelPickerEnabled = true,
+    mapToolbarEnabled = true,
+    myLocationButtonEnabled = true,
+    rotationGesturesEnabled = true,
+    scrollGesturesEnabled = true,
+    scrollGesturesEnabledDuringRotateOrZoom = true,
+    tiltGesturesEnabled = true,
+    zoomControlsEnabled = true,
+    zoomGesturesEnabled = true,
+)
+
 val DefaultDetailMapUiSettings = MapUiSettings(
     compassEnabled = false,
     indoorLevelPickerEnabled = false,

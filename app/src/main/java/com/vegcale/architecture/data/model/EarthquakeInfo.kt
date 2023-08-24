@@ -20,6 +20,19 @@ data class Points(
     val scale: Byte?,
 ): Serializable
 
+object SeismicIntensity {
+    const val IntensityOfOne: Byte = 10
+    const val IntensityOfTwo: Byte = 20
+    const val IntensityOfThree: Byte = 30
+    const val IntensityOfFour: Byte = 40
+    const val IntensityOfLowerFive: Byte = 45
+    const val IntensityOfMoreThanUpperFive: Byte = 46
+    const val IntensityOfUpperFive: Byte = 50
+    const val IntensityOfLowerSix: Byte = 55
+    const val IntensityOfUpperSix: Byte = 60
+    const val IntensityOfSeven: Byte = 70
+}
+
 @Suppress("UNCHECKED_CAST")
 val EarthquakeInfoMapSaver = mapSaver(
     save = {

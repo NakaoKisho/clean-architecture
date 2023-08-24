@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">architecture</string>
+    <string name="depth">depth</string>
     <string name="epicenter">hypocenter</string>
-    <string name="intensity_of_four">intensity of 4</string>
-    <string name="intensity_of_lower_five">intensity of lower 5</string>
-    <string name="intensity_of_lower_six">intensity of lower 6</string>
-    <string name="intensity_of_more_than_upper_five">intensity of more than upper 5</string>
-    <string name="intensity_of_one">intensity of 1</string>
-    <string name="intensity_of_seven">intensity of 7</string>
-    <string name="intensity_of_three">intensity of 3</string>
-    <string name="intensity_of_two">intensity of 2</string>
-    <string name="intensity_of_upper_five">intensity of upper 5</string>
-    <string name="intensity_of_upper_six">intensity of 6</string>
+    <string name="expand_less">expand less</string>
+    <string name="expand_more">expand more</string>
+    <string name="seismic_intensity">intensity level</string>
+    <string name="seismic_intensity_level_four">4</string>
+    <string name="seismic_intensity_level_lower_five">lower 5</string>
+    <string name="seismic_intensity_level_lower_six">lower 6</string>
+    <string name="seismic_intensity_level_more_than_upper_five">more than upper 5</string>
+    <string name="seismic_intensity_level_one">1</string>
+    <string name="seismic_intensity_level_seven">7</string>
+    <string name="seismic_intensity_level_three">3</string>
+    <string name="seismic_intensity_level_two">2</string>
+    <string name="seismic_intensity_level_upper_five">upper 5</string>
+    <string name="seismic_intensity_level_upper_six">upper 6</string>
+    <string name="seismic_intensity_of_four">intensity of 4</string>
+    <string name="seismic_intensity_of_lower_five">intensity of lower 5</string>
+    <string name="seismic_intensity_of_lower_six">intensity of lower 6</string>
+    <string name="seismic_intensity_of_more_than_upper_five">intensity of more than upper 5</string>
+    <string name="seismic_intensity_of_one">intensity of 1</string>
+    <string name="seismic_intensity_of_seven">intensity of 7</string>
+    <string name="seismic_intensity_of_three">intensity of 3</string>
+    <string name="seismic_intensity_of_two">intensity of 2</string>
+    <string name="seismic_intensity_of_upper_five">intensity of upper 5</string>
+    <string name="seismic_intensity_of_upper_six">intensity of 6</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
     <string name="maximum_intensity">maximum intensity</string>
     <string name="magnitude">magnitude</string>
+    <string name="no_data">no data</string>
+    <string name="observation_place_name">place name</string>
+    <string name="observation_places_info">observation places info</string>
 </resources>
