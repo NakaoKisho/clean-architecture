@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">architecture</string>
+    <string name="denied_location_permission">Location currently disabled due to denied permission.</string>
     <string name="depth">depth</string>
     <string name="epicenter">hypocenter</string>
     <string name="expand_less">expand less</string>
     <string name="expand_more">expand more</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="latitude">latitude</string>
+    <string name="location_access">Location access</string>
+    <string name="location_access_on_map_reason">Allow this app to access this device\'s location to display your location on the map?</string>
+    <string name="load_error">Something went wrong. Try reloading.</string>
+    <string name="longitude">longitude</string>
+    <string name="maximum_intensity">maximum intensity</string>
+    <string name="magnitude">magnitude</string>
+    <string name="no">No</string>
+    <string name="no_data">no data</string>
+    <string name="observation_place_name">place name</string>
+    <string name="observation_places_info">observation places info</string>
     <string name="seismic_intensity">intensity level</string>
     <string name="seismic_intensity_level_four">4</string>
     <string name="seismic_intensity_level_lower_five">lower 5</string>
@@ -26,11 +39,5 @@
     <string name="seismic_intensity_of_two">intensity of 2</string>
     <string name="seismic_intensity_of_upper_five">intensity of upper 5</string>
     <string name="seismic_intensity_of_upper_six">intensity of 6</string>
-    <string name="latitude">latitude</string>
-    <string name="longitude">longitude</string>
-    <string name="maximum_intensity">maximum intensity</string>
-    <string name="magnitude">magnitude</string>
-    <string name="no_data">no data</string>
-    <string name="observation_place_name">place name</string>
-    <string name="observation_places_info">observation places info</string>
+    <string name="yes">Yes</string>
 </resources>

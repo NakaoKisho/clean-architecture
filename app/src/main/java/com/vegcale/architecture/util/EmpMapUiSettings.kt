@@ -1,4 +1,4 @@
-package com.vegcale.architecture.ui.components
+package com.vegcale.architecture.util
 
 import com.google.maps.android.compose.MapUiSettings
 

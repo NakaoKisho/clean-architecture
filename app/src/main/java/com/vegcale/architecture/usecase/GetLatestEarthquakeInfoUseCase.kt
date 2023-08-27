@@ -1,5 +1,6 @@
 package com.vegcale.architecture.usecase
 
+import android.util.Log
 import com.vegcale.architecture.BuildConfig
 import com.vegcale.architecture.data.P2pquakeRepository
 import com.vegcale.architecture.data.Result
@@ -17,12 +18,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+private const val TAG = "GetLatestEarthquakeInfoUseCase"
 class GetLatestEarthquakeInfoUseCase @Inject constructor(
     private val usgsEarthquakeRepository: UsgsEarthquakeRepository,
     private val p2pquakeRepository: P2pquakeRepository,
     private val yahooGeocodeRepository: YahooGeocodeRepository,
 ) {
     operator fun invoke(): Flow<List<EarthquakeInfo>> {
+        Log.i(TAG, "GetLatestEarthquakeInfoUseCase.invoke() starts")
         return flow {
             while (true) {
                 val usgsResult = usgsEarthquakeRepository.getInfo("geojson", 10, "time")

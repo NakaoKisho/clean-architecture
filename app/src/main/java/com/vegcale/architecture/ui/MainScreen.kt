@@ -3,12 +3,17 @@ package com.vegcale.architecture.ui
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -33,11 +38,15 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -58,6 +68,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
@@ -72,50 +83,51 @@ import com.vegcale.architecture.data.model.EarthquakeInfo
 import com.vegcale.architecture.data.model.EarthquakeInfoMapSaver
 import com.vegcale.architecture.data.model.Points
 import com.vegcale.architecture.data.model.SeismicIntensity
-import com.vegcale.architecture.ui.components.DefaultDetailMapUiSettings
-import com.vegcale.architecture.ui.components.DefaultSummaryMapUiSettings
 import com.vegcale.architecture.ui.components.EmpProgressIndicator
-import com.vegcale.architecture.ui.components.rememberCameraPositionState
-import com.vegcale.architecture.ui.components.rememberMarkerState
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 import com.vegcale.architecture.util.BitmapHelper
+import com.vegcale.architecture.util.DefaultDetailMapUiSettings
+import com.vegcale.architecture.util.DefaultSummaryMapUiSettings
+import com.vegcale.architecture.util.isPermissionGranted
+import com.vegcale.architecture.util.rememberEmpCameraPositionState
+import com.vegcale.architecture.util.rememberEmpMarkerState
 import kotlinx.coroutines.launch
 
-//lateinit var viewModel: MainViewModel
+private const val TAG = "MainScreen.kt"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
+    // This should take earthquake info independently
     viewModel: MainViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState
     val itemState = state.earthquakeData.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    var items = emptyList<EarthquakeInfo>()
+    val loadErrorMessage = stringResource(R.string.load_error)
+    Log.i(TAG, itemState.value.toString())
+    when (itemState.value) {
+        is MainActivityUiState.Success -> {
+            items = (itemState.value as MainActivityUiState.Success).earthquakeData
+        }
 
-//    if (items.value is MainActivityUiState.Success) {
-//        MainScreen(state)
-////        MainScreen((items.value as MainActivityUiState.Success).earthquakeData)
-//    } else {
-////        val noItemList = emptyList<EarthquakeInfo>()
-//        MainScreen(null)
-////        MainScreen(noItemList)
-//    }
-//}
+        is MainActivityUiState.Error -> {
+            LaunchedEffect(key1 = null) {
+                snackbarHostState.showSnackbar(
+                    message = loadErrorMessage
+                )
+            }
+        }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//internal fun MainScreen(
-//    state: MainViewModel.UiState?
-////    items: List<EarthquakeInfo>
-//) {
-    if (itemState.value !is MainActivityUiState.Success) {
-        EmpProgressIndicator(
-            modifier = Modifier
-                .fillMaxSize()
-                .zIndex(2.0f)
-                .clickable {}
-        )
-        return
+        is MainActivityUiState.Loading -> {
+            EmpProgressIndicator(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(2.0f)
+                    .clickable {}
+            )
+        }
     }
-    val items = (itemState.value as MainActivityUiState.Success).earthquakeData
 
     Surface(
         modifier = Modifier
@@ -142,54 +154,79 @@ fun MainScreen(
             sheetPeekHeight = sheetPeekHeight.dp,
             sheetDragHandle = { BottomSheetDefaults.DragHandle(
                 color = MaterialTheme.colorScheme.primary
-            ) }
+            ) },
+            snackbarHost = { SnackbarHost(snackbarHostState) }
         ) {
-            // TODO: get location or remember the values
             val coroutineScope = rememberCoroutineScope()
-            val snackbarHostState = remember { SnackbarHostState() }
+            val context = LocalContext.current
+            val deniedLocationPermissionMessage = stringResource(R.string.denied_location_permission)
+            val goToSettingsMessage = stringResource(R.string.go_to_settings)
+            val cannotResolveActivityErrorMessage = stringResource(R.string.cannot_resolve_activity)
             val requestLocationPermissions =
                 rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestMultiplePermissions()
                 ) { permissionsMap ->
-                    val areGranted = permissionsMap.values.reduce { acc, next -> acc && next }
-                    if (areGranted) {
-                        viewModel.onPermissionChange(ACCESS_COARSE_LOCATION, true)
-                        viewModel.onPermissionChange(ACCESS_FINE_LOCATION, true)
-                        viewModel.fetchLocation()
-                    } else {
+                    if (permissionsMap.all { !it.value }) {
                         coroutineScope.launch {
-                            snackbarHostState.showSnackbar(
-                                message = "Location currently disabled due to denied permission."
+                            val snackbarActionResult = snackbarHostState.showSnackbar(
+                                message = deniedLocationPermissionMessage,
+                                actionLabel = goToSettingsMessage
                             )
+                            if (snackbarActionResult == SnackbarResult.ActionPerformed) {
+                                val intent = Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", context.packageName, null)
+                                )
+                                if (intent.resolveActivity(context.packageManager) != null) {
+                                    ContextCompat.startActivity(context, intent, null)
+                                } else {
+                                    Log.e(TAG, cannotResolveActivityErrorMessage)
+                                }
+                            }
+                        }
+                    } else {
+                        for (key in permissionsMap.keys) {
+                            val isGranted = permissionsMap[key]
+                            if (isGranted == null || !isGranted) continue
+
+                            viewModel.onPermissionChange(
+                                permission = key,
+                                isGranted = isGranted
+                            )
+                            viewModel.updateLocation()
+                            break
                         }
                     }
                 }
             var showExplanationDialogForLocationPermission by remember { mutableStateOf(false) }
             if (showExplanationDialogForLocationPermission) {
-                LocationExplanationDialog(
-                    onConfirm = {
+                when {
+                    isPermissionGranted(context, ACCESS_COARSE_LOCATION) ||
+                            isPermissionGranted(context, ACCESS_FINE_LOCATION) -> {
                         requestLocationPermissions.launch(arrayOf(ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION))
                         showExplanationDialogForLocationPermission = false
-                    },
-                    onDismiss = { showExplanationDialogForLocationPermission = false },
-                )
+                    }
+                    else ->
+                        LocationExplanationDialog(
+                            onConfirm = {
+                                requestLocationPermissions.launch(arrayOf(ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION))
+                                showExplanationDialogForLocationPermission = false
+                            },
+                            onDismiss = { showExplanationDialogForLocationPermission = false },
+                        )
+                }
             }
 
             val cameraPositionState = rememberCameraPositionState {
                 position = CameraPosition.fromLatLngZoom(state.latLng, 0f)
             }
             val googleMapUiSettings = DefaultSummaryMapUiSettings
-            val googleMapProperties = MapProperties(isMyLocationEnabled = if (true) true else false)
 
             GoogleMap(
                 cameraPositionState = cameraPositionState,
-//                properties = MapProperties(isMyLocationEnabled = true),
+                properties = MapProperties(isMyLocationEnabled = state.hasLocationAccess),
                 uiSettings = googleMapUiSettings,
-                onMapClick = { sheetPeekHeight = 0f },
-                onMyLocationButtonClick = {
-                    showExplanationDialogForLocationPermission = true
-                    false
-                }
+                onMapClick = { sheetPeekHeight = 0f }
             ) {
                 items.forEach { earthquakeInfoItem ->
                     val markerState = rememberMarkerState(
@@ -210,6 +247,31 @@ fun MainScreen(
                     )
                 }
             }
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopEnd
+            ) {
+                AnimatedVisibility(
+                    visible = !state.hasLocationAccess,
+                    exit = shrinkHorizontally() + fadeOut()
+                )  {
+                    SmallFloatingActionButton(
+                        onClick = {
+                            showExplanationDialogForLocationPermission = true
+                        },
+                        modifier = Modifier.padding(
+                            top = 8.dp,
+                            end = 8.dp
+                        ),
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_navigation_24),
+                            contentDescription = null
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -218,8 +280,8 @@ fun MainScreen(
 fun LocationExplanationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Location access") },
-        text = { Text("PhotoLog would like access to your location to save it when creating a log") },
+        title = { Text(stringResource(R.string.location_access)) },
+        text = { Text(stringResource(R.string.location_access_on_map_reason)) },
         icon = {
             Icon(
                 Icons.Filled.Done,
@@ -229,15 +291,14 @@ fun LocationExplanationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
         },
         confirmButton = {
             Button(onClick = onConfirm) {
-                Text("Continue")
+                Text(stringResource(R.string.yes))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Dismiss")
+                Text(stringResource(R.string.no))
             }
-        },
-//        modifier = Modifier.zIndex(3.0f)
+        }
     )
 }
 
@@ -263,7 +324,7 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
         ) {
             item {
                 val epicenterLatLng = LatLng(itemInfo.latitude, itemInfo.longitude)
-                val cameraPositionState = rememberCameraPositionState(
+                val cameraPositionState = rememberEmpCameraPositionState(
                     inputs = arrayOf(epicenterLatLng.toString()),
                 ) {
                     position = CameraPosition.fromLatLngZoom(epicenterLatLng, 6.0f)
@@ -277,7 +338,7 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                     cameraPositionState = cameraPositionState,
                     uiSettings = googleMapUiSettings,
                 ) {
-                    val epicenterMarkerState = rememberMarkerState(
+                    val epicenterMarkerState = rememberEmpMarkerState(
                         inputs = arrayOf(epicenterLatLng.toString()),
                         position = epicenterLatLng
                     )
@@ -296,7 +357,7 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                         if (point.latitude == null || point.longitude == null) return@forEach
 
                         val observationPlaceLatLng = LatLng(point.latitude, point.longitude)
-                        val observationPlaceMarkerState = rememberMarkerState(
+                        val observationPlaceMarkerState = rememberEmpMarkerState(
                             inputs = arrayOf(observationPlaceLatLng.toString()),
                             position = observationPlaceLatLng
                         )

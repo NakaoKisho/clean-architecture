@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">architecture</string>
+    <string name="denied_location_permission">位置情報の取得が許可されていません</string>
     <string name="depth">深さ</string>
     <string name="epicenter">震源地</string>
     <string name="expand_less">詳細表示</string>
     <string name="expand_more">詳細非表示</string>
+    <string name="go_to_settings">設定を変更する</string>
+    <string name="latitude">緯度</string>
+    <string name="location_access">位置情報の取得</string>
+    <string name="location_access_on_map_reason">マップに現在地を表示するため位置情報を取得してもよろしいですか？</string>
+    <string name="load_error">エラーが発生しました。時間を置いてもう一度お試しください。</string>
+    <string name="longitude">経度</string>
+    <string name="maximum_intensity">最大震度</string>
+    <string name="magnitude">マグニチュード</string>
+    <string name="no">いいえ</string>
+    <string name="no_data">情報なし</string>
+    <string name="observation_place_name">地点名</string>
+    <string name="observation_places_info">震度観測地点情報</string>
     <string name="seismic_intensity">震度</string>
     <string name="seismic_intensity_level_four">4</string>
     <string name="seismic_intensity_level_lower_five">5弱</string>
@@ -26,11 +39,8 @@
     <string name="seismic_intensity_of_two">震度2</string>
     <string name="seismic_intensity_of_upper_five">震度5強</string>
     <string name="seismic_intensity_of_upper_six">震度6強</string>
-    <string name="latitude">緯度</string>
-    <string name="longitude">経度</string>
-    <string name="maximum_intensity">最大震度</string>
-    <string name="magnitude">マグニチュード</string>
-    <string name="no_data">情報なし</string>
-    <string name="observation_place_name">地点名</string>
-    <string name="observation_places_info">震度観測地点情報</string>
+    <string name="yes">はい</string>
+
+<!--  異常系  -->
+    <string name="cannot_resolve_activity" translatable="false">No component can handle this intent</string>
 </resources>
