@@ -229,6 +229,11 @@ fun MainScreen(
                 onMapClick = { sheetPeekHeight = 0f }
             ) {
                 items.forEach { earthquakeInfoItem ->
+                    if (earthquakeInfoItem.latitude.toFloat() == 0.0f &&
+                        earthquakeInfoItem.longitude.toFloat() == 0.0f) {
+                        return@forEach
+                    }
+
                     val markerState = rememberMarkerState(
                         position = LatLng(
                             earthquakeInfoItem.latitude,
@@ -361,7 +366,7 @@ private fun BottomSheetContent(itemInfo: EarthquakeInfo) {
                             inputs = arrayOf(observationPlaceLatLng.toString()),
                             position = observationPlaceLatLng
                         )
-                        val (seismicIntensity, seismicIntensityVectorId) = when(point.scale) {
+                        val (seismicIntensity, seismicIntensityVectorId) = when (point.scale) {
                             SeismicIntensity.IntensityOfOne ->
                                 stringResource(R.string.seismic_intensity_of_one) to R.drawable.seismic_intensity_of_one
                             SeismicIntensity.IntensityOfTwo ->
@@ -552,7 +557,7 @@ private fun ObservationPlacesDataTable(
 
     val noData = stringResource(R.string.no_data)
     points.forEach { point ->
-        if (point.place == null) return@forEach
+        if (point.place == null || point.place == "") return@forEach
 
         var isExpanded by rememberSaveable { mutableStateOf(false) }
 

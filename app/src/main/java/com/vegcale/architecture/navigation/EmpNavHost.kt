@@ -6,7 +6,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.vegcale.architecture.ui.ListsScreen
+import com.vegcale.architecture.feature.search.SearchScreen
 import com.vegcale.architecture.ui.MainScreen
 import com.vegcale.architecture.ui.SettingsScreen
 
@@ -24,7 +24,7 @@ fun EmpNavHost(
             MainScreen()
         }
         composable(route = Lists.route) {
-            ListsScreen()
+            SearchScreen()
         }
         composable(route = Settings.route) {
             SettingsScreen()

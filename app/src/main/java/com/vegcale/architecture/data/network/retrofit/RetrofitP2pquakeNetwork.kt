@@ -17,7 +17,9 @@ interface RetrofitP2pquakeNetworkApi {
     ): List<P2pquakeInfo>
 }
 
-class RetrofitP2pquakeNetwork @Inject constructor(@Named("p2pUrl") baseUrl: String): P2pquakeApi {
+class RetrofitP2pquakeNetwork @Inject constructor(
+    @Named("p2pUrl") baseUrl: String
+): P2pquakeApi {
     private val retrofitP2pquakeNetworkApi =
         Retrofit
             .Builder()

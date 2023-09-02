@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">architecture</string>
+    <string name="ascending_order">ascending order</string>
+    <string name="closeness_order">closeness to current location order</string>
+    <string name="date_and_time">date and time</string>
     <string name="denied_location_permission">Location currently disabled due to denied permission.</string>
-    <string name="depth">depth</string>
+    <string name="depth">depth(km)</string>
+    <string name="descending_order">descending order</string>
     <string name="epicenter">hypocenter</string>
     <string name="expand_less">expand less</string>
     <string name="expand_more">expand more</string>
+    <string name="expand_more_and_less">expand more and less</string>
     <string name="go_to_settings">Go to settings</string>
     <string name="latitude">latitude</string>
+    <string name="list_icon_description">display order change button</string>
     <string name="location_access">Location access</string>
     <string name="location_access_on_map_reason">Allow this app to access this device\'s location to display your location on the map?</string>
     <string name="load_error">Something went wrong. Try reloading.</string>
@@ -18,6 +24,7 @@
     <string name="no_data">no data</string>
     <string name="observation_place_name">place name</string>
     <string name="observation_places_info">observation places info</string>
+    <string name="search_icon_description">search button</string>
     <string name="seismic_intensity">intensity level</string>
     <string name="seismic_intensity_level_four">4</string>
     <string name="seismic_intensity_level_lower_five">lower 5</string>

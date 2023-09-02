@@ -32,3 +32,6 @@ val Typography = Typography(
     )
     */
 )
+
+const val DefaultAlpha = 0.7f
+const val BoldAlpha = 0.9f
