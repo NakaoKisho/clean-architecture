@@ -21,6 +21,7 @@ data class Points(
 ): Serializable
 
 object SeismicIntensity {
+    const val NoData: Byte = 0
     const val IntensityOfOne: Byte = 10
     const val IntensityOfTwo: Byte = 20
     const val IntensityOfThree: Byte = 30

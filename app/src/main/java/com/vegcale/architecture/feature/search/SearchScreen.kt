@@ -1,5 +1,6 @@
 package com.vegcale.architecture.feature.search
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -36,16 +38,20 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -55,130 +61,53 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import com.vegcale.architecture.R
 import com.vegcale.architecture.data.model.EarthquakeInfo
 import com.vegcale.architecture.data.model.Points
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 import com.vegcale.architecture.ui.theme.BoldAlpha
 import com.vegcale.architecture.ui.theme.DefaultAlpha
+import com.vegcale.architecture.util.BitmapHelper
+import com.vegcale.architecture.util.DefaultMapUiSettings
+import com.vegcale.architecture.util.rememberEmpCameraPositionState
+import kotlinx.coroutines.launch
 
 @Composable
-fun SearchScreen() {
-    val earthquakeInfo = listOf(
-        EarthquakeInfo(
-            datetime = "2023/01/01 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/02 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/03 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/04 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/05 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-    )
+fun SearchScreen(
+    searchViewModel: SearchScreenViewModel = hiltViewModel()
+) {
+    val uiState = searchViewModel.uiState.earthquakeData.collectAsStateWithLifecycle()
+    var earthquakeInfo = emptyList<EarthquakeInfo>()
+    if (uiState.value is SearchScreenUiState.Success) {
+        earthquakeInfo = (uiState.value as SearchScreenUiState.Success).data
+    } else if (uiState.value is SearchScreenUiState.Loading) {
+        earthquakeInfo = emptyList()
+    }
 
-    SearchScreen(Modifier, earthquakeInfo)
+    SearchScreen(
+        earthquakeInfo = earthquakeInfo,
+        resetEarthquakeInfo = searchViewModel::resetEarthquakeInfo,
+        updateEarthquakeInfo = searchViewModel::updateEarthquakeInfo,
+        clickedEarthquakeInfo = searchViewModel.uiState.clickedEarthquakeInfo,
+        updateData = searchViewModel::updateData,
+        latLng = searchViewModel.uiState.latLng,
+        datetime = searchViewModel.uiState.clickedEarthquakeInfo?.datetime ?: ""
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -186,6 +115,13 @@ fun SearchScreen() {
 internal fun SearchScreen(
     modifier: Modifier = Modifier,
     earthquakeInfo: List<EarthquakeInfo>,
+    resetEarthquakeInfo: () -> Unit = {},
+    updateEarthquakeInfo: (String, String, Double, Double, Double, Int, List<Points>, String) -> Unit =
+        { _, _, _, _, _, _, _, _ -> },
+    clickedEarthquakeInfo: SearchScreenViewModel.ClickedEarthquakeInfo?,
+    updateData: () -> Unit = {},
+    latLng: LatLng,
+    datetime: String = ""
 ) {
     var isSheetExpanded by rememberSaveable { mutableStateOf(false) }
     val sheetPeekHeight by animateDpAsState(
@@ -198,33 +134,127 @@ internal fun SearchScreen(
         label = "Sheet peek height animation for BottomSheetScaffold in SearchScreen.kt"
     )
     BottomSheetScaffold(
-        sheetContent = { BottomSheetContent() },
+        sheetContent = { BottomSheetContent(clickedEarthquakeInfo) },
         modifier = modifier,
         sheetPeekHeight = sheetPeekHeight,
         sheetDragHandle = { BottomSheetDefaults.DragHandle(
             color = MaterialTheme.colorScheme.primary
         ) },
-        topBar = {
-            SearchTopAppBar(
-                listOnClick = {},
-                searchOnClick = {}
-            )
-        }
+//        topBar = {
+//            SearchTopAppBar(
+//                listOnClick = {},
+//                searchOnClick = {}
+//            )
+//        }
     ) {
-        val cameraPositionState = rememberCameraPositionState {
+        // Button to update data
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .zIndex(1f),
+            contentAlignment = Alignment.TopStart
+        ) {
+            SmallFloatingActionButton(
+                onClick = {
+                    updateData()
+                },
+                modifier = Modifier
+                    .padding(
+                        start = 8.dp,
+                        top = 8.dp
+                    ),
+                containerColor = Color.Transparent,
+                elevation = FloatingActionButtonDefaults.elevation(
+                    defaultElevation = 0.dp,
+                    pressedElevation = 0.dp,
+                    focusedElevation = 0.dp,
+                    hoveredElevation = 0.dp,
+                )
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_cached_24),
+                    contentDescription = null,
+                    tint = colorResource(R.color.blue_R000_G098_B160),
+                )
+            }
+        }
+
+        // Google Map
+        var zoomLevel by rememberSaveable { mutableFloatStateOf(0f) }
+        val cameraPositionState = rememberEmpCameraPositionState(
+            inputs = arrayOf(datetime)
+        ) {
             this.position = CameraPosition(
-                LatLng(0.0, 0.0),
-                0f,
+                latLng,
+                zoomLevel,
                 0f,
                 0f
             )
         }
+        zoomLevel = cameraPositionState.position.zoom
+        val googleMapUiSettings = DefaultMapUiSettings
+        val substituteText = stringResource(R.string.no_data)
+        val scope = rememberCoroutineScope()
+        val lazyListState = rememberLazyListState()
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-            onMapClick = { isSheetExpanded = false }
+            uiSettings = googleMapUiSettings,
+            onMapClick = {
+                isSheetExpanded = false
+                resetEarthquakeInfo()
+            }
         ) {
-            Marker()
+            if (earthquakeInfo.isEmpty()) return@GoogleMap
+
+            earthquakeInfo.forEachIndexed { index, hypocenter ->
+                val markerState = rememberMarkerState(
+                    position = LatLng(
+                        hypocenter.latitude,
+                        hypocenter.longitude
+                    )
+                )
+                Marker(
+                    state = markerState,
+                    title = hypocenter.place,
+                    snippet = hypocenter.place,
+                    onClick = { _ ->
+                        isSheetExpanded = true
+                        updateEarthquakeInfo(
+                            hypocenter.datetime,
+                            hypocenter.place,
+                            hypocenter.latitude,
+                            hypocenter.longitude,
+                            hypocenter.magnitude,
+                            hypocenter.depth,
+                            hypocenter.points,
+                            substituteText
+                        )
+                        scope.launch {
+                            lazyListState.animateScrollToItem(index)
+                        }
+                        false
+                    }
+                )
+            }
+
+            // Markers for epicenters
+            clickedEarthquakeInfo?.points?.forEach { point ->
+                Log.i("test point", point.toString())
+                if (point.latitude == substituteText || point.longitude == substituteText) return@forEach
+                val markerState = rememberMarkerState(
+                    position = LatLng(
+                        point.latitude.toDouble(),
+                        point.longitude.toDouble()
+                    )
+                )
+                Marker(
+                    state = markerState,
+                    icon = BitmapHelper().vectorToBitmap(point.scaleDrawableId),
+                    title = point.place,
+                    snippet = stringResource(point.scaleStringId)
+                )
+            }
         }
         Box(
             modifier = Modifier
@@ -233,42 +263,54 @@ internal fun SearchScreen(
             contentAlignment = Alignment.BottomStart
         ) {
             LazyRow(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                state = lazyListState
             ) {
                 items(earthquakeInfo.size) {
                     val data = earthquakeInfo[it]
-                    Box(
+                    ElevatedCard(
                         modifier = Modifier
-                            .clickable { isSheetExpanded = true }
+                            .width(220.dp)
+                            .height(200.dp)
+                            .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
+                            .clickable {
+                                isSheetExpanded = true
+                                updateEarthquakeInfo(
+                                    data.datetime,
+                                    data.place,
+                                    data.latitude,
+                                    data.longitude,
+                                    data.magnitude,
+                                    data.depth,
+                                    data.points,
+                                    substituteText
+                                )
+                                scope.launch {
+                                    lazyListState.animateScrollToItem(it)
+                                }
+                            }
                     ) {
-                        ElevatedCard(
-                            modifier = Modifier
-                                .width(220.dp)
-                                .height(200.dp)
-                                .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
-                        ) {
-                            SearchScreenCard(
-                                modifier = Modifier.weight(1f),
-                                painter = painterResource(R.drawable.baseline_access_time_24),
-                                contentDescription = stringResource(R.string.date_and_time),
-                                titleText = stringResource(R.string.date_and_time),
-                                detailText = data.datetime,
-                            )
-                            SearchScreenCard(
-                                modifier = Modifier.weight(1f),
-                                painter = painterResource(R.drawable.baseline_location_on_24),
-                                contentDescription = stringResource(R.string.epicenter),
-                                titleText = stringResource(R.string.epicenter),
-                                detailText = data.place,
-                            )
-                            SearchScreenCard(
-                                modifier = Modifier.weight(1f),
-                                painter = painterResource(R.drawable.baseline_landslide_24),
-                                contentDescription = stringResource(R.string.magnitude),
-                                titleText = stringResource(R.string.magnitude),
-                                detailText = data.magnitude.toString(),
-                            )
-                        }
+                        SearchScreenCard(
+                            modifier = Modifier.weight(1f),
+                            painter = painterResource(R.drawable.baseline_access_time_24),
+                            contentDescription = stringResource(R.string.date_and_time),
+                            titleText = stringResource(R.string.date_and_time),
+                            detailText = data.datetime,
+                        )
+                        SearchScreenCard(
+                            modifier = Modifier.weight(1f),
+                            painter = painterResource(R.drawable.baseline_location_on_24),
+                            contentDescription = stringResource(R.string.epicenter),
+                            titleText = stringResource(R.string.epicenter),
+                            detailText = data.place,
+                        )
+                        SearchScreenCard(
+                            modifier = Modifier.weight(1f),
+                            painter = painterResource(R.drawable.baseline_landslide_24),
+                            contentDescription = stringResource(R.string.magnitude),
+                            titleText = stringResource(R.string.magnitude),
+                            detailText = data.magnitude.toString(),
+                        )
                     }
                 }
             }
@@ -277,7 +319,11 @@ internal fun SearchScreen(
 }
 
 @Composable
-private fun BottomSheetContent() {
+private fun BottomSheetContent(
+    itemDetail: SearchScreenViewModel.ClickedEarthquakeInfo?
+) {
+    if (itemDetail == null) return
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -289,38 +335,40 @@ private fun BottomSheetContent() {
             painter = painterResource(R.drawable.baseline_access_time_24),
             contentDescription = stringResource(R.string.date_and_time),
             titleText = stringResource(R.string.date_and_time),
-            detailText = "data.datetime",
+            detailText = itemDetail.datetime,
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_location_on_24),
             contentDescription = stringResource(R.string.epicenter),
             titleText = stringResource(R.string.epicenter),
-            detailText = "data.place",
+            detailText = itemDetail.place,
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_landslide_24),
             contentDescription = stringResource(R.string.magnitude),
             titleText = stringResource(R.string.magnitude),
-            detailText = "data.magnitude.toString()",
+            detailText = itemDetail.magnitude,
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_solar_power_24),
             contentDescription = stringResource(R.string.depth),
             titleText = stringResource(R.string.depth),
-            detailText = "data.depth",
+            detailText = itemDetail.depth,
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_language_24),
             contentDescription = stringResource(R.string.latitude),
             titleText = stringResource(R.string.latitude),
-            detailText = "data.latitude",
+            detailText = itemDetail.latitude,
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_language_24),
             contentDescription = stringResource(R.string.longitude),
             titleText = stringResource(R.string.longitude),
-            detailText = "data.longitude",
+            detailText = itemDetail.longitude,
         )
+
+        if (itemDetail.points.isEmpty()) return
 
         var isExpanded by rememberSaveable { mutableStateOf(false) }
         SearchScreenCard(
@@ -343,79 +391,88 @@ private fun BottomSheetContent() {
             }
         )
 
-        val sizeInPx = with(LocalDensity.current) { -40.dp.roundToPx() }
-        val fadeInInitialAlpha = 0.3f
-        AnimatedVisibility(
-            visible = isExpanded,
-            enter = slideInVertically {
-                sizeInPx
-            } + expandVertically(
-                expandFrom = Alignment.Top
-            ) + fadeIn(
-                initialAlpha = fadeInInitialAlpha
-            ),
-            exit = slideOutVertically() + shrinkVertically() + fadeOut()
-        )  {
-            Column {
-                var isDetailExpanded by rememberSaveable { mutableStateOf(false) }
-                SearchScreenCard(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .padding(start = 24.dp)
-                        .clickable { isDetailExpanded = !isDetailExpanded },
-                    painter = painterResource(R.drawable.baseline_location_on_24),
-                    contentDescription = stringResource(R.string.observation_place_name),
-                    titleText = stringResource(R.string.observation_place_name),
-                    detailText = "data.observation_place_namedata.observation_place_namedata.observation_place_namedata.observation_place_namedata.observation_place_namedata.observation_place_name",
-                    trailingIcon = {
-                        val rotation by animateFloatAsState(
-                            targetValue = if (isDetailExpanded) 180f else 0f,
-                            label = "Rotation animation for isDetailExpanded"
-                        )
-                        Icon(
-                            painter = painterResource(R.drawable.baseline_expand_more_24),
-                            contentDescription = stringResource(R.string.expand_more_and_less),
-                            modifier = Modifier.rotate(rotation)
-                        )
-                    }
-                )
+        for (point in itemDetail.points) {
+            if (
+                point.place == stringResource(R.string.no_data) &&
+                point.latitude == stringResource(R.string.no_data) &&
+                point.longitude == stringResource(R.string.no_data) &&
+                point.scaleStringId == R.string.no_data
+            ) return
 
-                AnimatedVisibility(
-                    visible = isDetailExpanded,
-                    enter = slideInVertically {
-                        sizeInPx
-                    } + expandVertically(
-                        expandFrom = Alignment.Top
-                    ) + fadeIn(
-                        initialAlpha = fadeInInitialAlpha
-                    ),
-                    exit = slideOutVertically() + shrinkVertically() + fadeOut()
-                ) {
-                    Column {
-                        SearchScreenCard(
-                            modifier = Modifier
-                                .padding(start = 24.dp),
-                            painter = painterResource(R.drawable.baseline_landslide_24),
-                            contentDescription = stringResource(R.string.seismic_intensity),
-                            titleText = stringResource(R.string.seismic_intensity),
-                            detailText = "data.seismic_intensity",
-                        )
-                        SearchScreenCard(
-                            modifier = Modifier
-                                .padding(start = 24.dp),
-                            painter = painterResource(R.drawable.baseline_language_24),
-                            contentDescription = stringResource(R.string.latitude),
-                            titleText = stringResource(R.string.latitude),
-                            detailText = "data.latitude",
-                        )
-                        SearchScreenCard(
-                            modifier = Modifier
-                                .padding(start = 24.dp),
-                            painter = painterResource(R.drawable.baseline_language_24),
-                            contentDescription = stringResource(R.string.longitude),
-                            titleText = stringResource(R.string.longitude),
-                            detailText = "data.longitude",
-                        )
+            val sizeInPx = with(LocalDensity.current) { -40.dp.roundToPx() }
+            val fadeInInitialAlpha = 0.3f
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = slideInVertically {
+                    sizeInPx
+                } + expandVertically(
+                    expandFrom = Alignment.Top
+                ) + fadeIn(
+                    initialAlpha = fadeInInitialAlpha
+                ),
+                exit = slideOutVertically() + shrinkVertically() + fadeOut()
+            ) {
+                Column {
+                    var isDetailExpanded by rememberSaveable { mutableStateOf(false) }
+                    SearchScreenCard(
+                        modifier = Modifier
+                            .wrapContentHeight()
+                            .padding(start = 24.dp)
+                            .clickable { isDetailExpanded = !isDetailExpanded },
+                        painter = painterResource(R.drawable.baseline_location_on_24),
+                        contentDescription = stringResource(R.string.observation_place_name),
+                        titleText = stringResource(R.string.observation_place_name),
+                        detailText = point.place,
+                        trailingIcon = {
+                            val rotation by animateFloatAsState(
+                                targetValue = if (isDetailExpanded) 180f else 0f,
+                                label = "Rotation animation for isDetailExpanded"
+                            )
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_expand_more_24),
+                                contentDescription = stringResource(R.string.expand_more_and_less),
+                                modifier = Modifier.rotate(rotation)
+                            )
+                        }
+                    )
+
+                    AnimatedVisibility(
+                        visible = isDetailExpanded,
+                        enter = slideInVertically {
+                            sizeInPx
+                        } + expandVertically(
+                            expandFrom = Alignment.Top
+                        ) + fadeIn(
+                            initialAlpha = fadeInInitialAlpha
+                        ),
+                        exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                    ) {
+                        Column {
+                            SearchScreenCard(
+                                modifier = Modifier
+                                    .padding(start = 24.dp),
+                                painter = painterResource(R.drawable.baseline_landslide_24),
+                                contentDescription = stringResource(R.string.seismic_intensity),
+                                titleText = stringResource(R.string.seismic_intensity),
+                                detailText = stringResource(point.scaleStringId),
+                            )
+                            SearchScreenCard(
+                                modifier = Modifier
+                                    .padding(start = 24.dp),
+                                painter = painterResource(R.drawable.baseline_language_24),
+                                contentDescription = stringResource(R.string.latitude),
+                                titleText = stringResource(R.string.latitude),
+                                detailText = point.latitude,
+                            )
+                            SearchScreenCard(
+                                modifier = Modifier
+                                    .padding(start = 24.dp),
+                                painter = painterResource(R.drawable.baseline_language_24),
+                                contentDescription = stringResource(R.string.longitude),
+                                titleText = stringResource(R.string.longitude),
+                                detailText = point.longitude,
+                            )
+                        }
                     }
                 }
             }
@@ -427,7 +484,6 @@ private fun BottomSheetContent() {
 @Composable
 private fun SearchTopAppBar(
     modifier: Modifier = Modifier,
-    listOnClick: () -> Unit,
     searchOnClick: () -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
@@ -712,14 +768,20 @@ fun SearchScreenPreview() {
             )
         ),
     )
+    val tokyoLatLng = LatLng(35.6812, 139.7671)
 
     ArchitectureTheme {
-        SearchScreen(Modifier, earthquakeInfo)
+        SearchScreen(
+            earthquakeInfo = earthquakeInfo,
+            clickedEarthquakeInfo = null,
+            latLng = tokyoLatLng,
+            datetime = ""
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun BottomSheetContentPreview() {
-    BottomSheetContent()
+    BottomSheetContent(itemDetail = null)
 }

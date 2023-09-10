@@ -27,3 +27,16 @@ val DefaultDetailMapUiSettings = MapUiSettings(
     zoomControlsEnabled = true,
     zoomGesturesEnabled = false,
 )
+
+val DefaultMapUiSettings = MapUiSettings(
+    compassEnabled = true,
+    indoorLevelPickerEnabled = false,
+    mapToolbarEnabled = false,
+    myLocationButtonEnabled = true,
+    rotationGesturesEnabled = true,
+    scrollGesturesEnabled = true,
+    scrollGesturesEnabledDuringRotateOrZoom = true,
+    tiltGesturesEnabled = true,
+    zoomControlsEnabled = false,
+    zoomGesturesEnabled = true,
+)
