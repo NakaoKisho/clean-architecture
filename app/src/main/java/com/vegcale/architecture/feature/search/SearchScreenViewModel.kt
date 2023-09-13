@@ -26,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
     private val getLatestEarthquakeInfoUseCase: GetLatestEarthquakeInfoUseCase2
-) : ViewModel() {
+): ViewModel() {
     private val earthquakeData = mutableListOf<EarthquakeInfo>()
     private val tokyoLatLng = LatLng(35.6812, 139.7671)
     var uiState by mutableStateOf(

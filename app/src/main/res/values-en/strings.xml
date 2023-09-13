@@ -47,4 +47,66 @@
     <string name="seismic_intensity_of_upper_five">intensity of upper 5</string>
     <string name="seismic_intensity_of_upper_six">intensity of 6</string>
     <string name="yes">Yes</string>
+
+    <!--  配列  -->
+    <string-array name="intensity_levels">
+        <item>intensity of 1</item>
+        <item>intensity of 2</item>
+        <item>intensity of 3</item>
+        <item>intensity of 4</item>
+        <item>intensity of lower 5</item>
+        <item>intensity of upper 5</item>
+        <item>intensity of lower 6</item>
+        <item>intensity of upper 6</item>
+        <item>intensity of 7</item>
+    </string-array>
+    <string-array name="places_of_country">
+        <item>Hokkaido</item>
+        <item>Aomori</item>
+        <item>Iwate</item>
+        <item>Miyagi</item>
+        <item>Akita</item>
+        <item>Yamagata</item>
+        <item>Fukushima</item>
+        <item>Ibaraki</item>
+        <item>Tochigi</item>
+        <item>Gunma</item>
+        <item>Saitama</item>
+        <item>Chiba</item>
+        <item>Tokyo</item>
+        <item>Kanagawa</item>
+        <item>Niigata</item>
+        <item>Toyama</item>
+        <item>Ishikawa</item>
+        <item>Fukui</item>
+        <item>Yamanashi</item>
+        <item>Nagano</item>
+        <item>Gifu</item>
+        <item>Shizuoka</item>
+        <item>Aichi</item>
+        <item>Mie</item>
+        <item>Shiga</item>
+        <item>Kyoto</item>
+        <item>Osaka</item>
+        <item>Hyogo</item>
+        <item>Nara</item>
+        <item>Wakayama</item>
+        <item>Tottori</item>
+        <item>Shimane</item>
+        <item>Okayama</item>
+        <item>Hiroshima</item>
+        <item>Yamaguchi</item>
+        <item>Tokushima</item>
+        <item>Kagawa</item>
+        <item>Ehime</item>
+        <item>Kochi</item>
+        <item>Fukuoka</item>
+        <item>Saga</item>
+        <item>Nagasaki</item>
+        <item>Kumamoto</item>
+        <item>Oita</item>
+        <item>Miyazaki</item>
+        <item>Kagoshima</item>
+        <item>Okinawa</item>
+    </string-array>
 </resources>

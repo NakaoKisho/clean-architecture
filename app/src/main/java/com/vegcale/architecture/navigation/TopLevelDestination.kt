@@ -2,7 +2,6 @@ package com.vegcale.architecture.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -18,11 +17,11 @@ object Map: TopLevelDestination {
     override val route = "home"
 }
 
-object Lists: TopLevelDestination {
-    override val description = "Lists"
-    override val icon = Icons.Filled.List
-    override val route = "lists"
-}
+//object Lists: TopLevelDestination {
+//    override val description = "Lists"
+//    override val icon = Icons.Filled.List
+//    override val route = "lists"
+//}
 
 object Settings: TopLevelDestination {
     override val description = "Settings"
@@ -30,4 +29,5 @@ object Settings: TopLevelDestination {
     override val route = "settings"
 }
 
-val tabRowScreens = listOf(Map, Lists, Settings)
+//val tabRowScreens = listOf(Map, Lists, Settings)
+val tabRowScreens = listOf(Map, Settings)

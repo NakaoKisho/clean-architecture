@@ -7,8 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.vegcale.architecture.feature.search.SearchScreen
-import com.vegcale.architecture.ui.MainScreen
-import com.vegcale.architecture.ui.SettingsScreen
+import com.vegcale.architecture.feature.settings.SettingsScreen
 
 @Composable
 fun EmpNavHost(
@@ -21,11 +20,11 @@ fun EmpNavHost(
         modifier = modifier
     ) {
         composable(route = Map.route) {
-            MainScreen()
-        }
-        composable(route = Lists.route) {
             SearchScreen()
         }
+//        composable(route = Lists.route) {
+//            SearchScreen()
+//        }
         composable(route = Settings.route) {
             SettingsScreen()
         }
