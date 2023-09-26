@@ -1,33 +1,130 @@
 package com.vegcale.architecture.feature.settings
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.vegcale.architecture.data.OfflineUserDataRepository
+import com.vegcale.architecture.notifications.NotificationsWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsScreenViewModel @Inject constructor(): ViewModel()  {
-    private var _isNotificationOn = MutableStateFlow(false)
-    val isNotificationOn: StateFlow<Boolean> = _isNotificationOn
-    fun setNotification(onOrOff: Boolean) {
-        _isNotificationOn.value = onOrOff
+@SuppressLint("StaticFieldLeak")
+class SettingsScreenViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val offlineUserDataRepository: OfflineUserDataRepository
+): ViewModel()  {
+    val uiState =
+        offlineUserDataRepository
+            .userData
+            .map {
+                SettingsUiState.Success(
+                    settings = UserEditableSettings(
+                        isNotificationOn = it.isNotificationOn,
+                        placeIndexes = it.placeIndexes,
+                        minIntensityLevelIndex = it.minIntensityLevelIndex,
+                    )
+                )
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = SettingsUiState.Loading,
+            )
+
+    // Notification state
+    fun setNotification(isOn: Boolean) {
+        viewModelScope.launch {
+            offlineUserDataRepository.setIsNotificationOn(isOn)
+        }
     }
 
-    private var _selectedPlaces = MutableStateFlow(emptyList<String>())
-    val selectedPlaces: StateFlow<List<String>> = _selectedPlaces
-    fun addSelectedPlace(item: String) {
-        val newList = listOf(item)
-        _selectedPlaces.value = _selectedPlaces.value + newList
+    // Place state
+    fun addSelectedPlace(index: Int) {
+        viewModelScope.launch {
+            offlineUserDataRepository.addPlaceIndex(index)
+        }
     }
-    fun removeSelectedPlace(item: String) {
-        val newList = listOf(item)
-        _selectedPlaces.value = _selectedPlaces.value - newList.toSet()
+    fun removeSelectedPlace(index: Int) {
+        viewModelScope.launch {
+            offlineUserDataRepository.deletePlaceIndex(index)
+        }
+    }
+    private val _placeArrayFirstIndex = 0
+    fun addAllPlaces(arraySize: Int){
+        viewModelScope.launch {
+            val newList = mutableListOf<Int>()
+            for (count in _placeArrayFirstIndex..arraySize) {
+                newList.add(count)
+            }
+
+            offlineUserDataRepository.addPlaceIndex(newList)
+        }
+    }
+    fun removeAllPlaces() {
+        viewModelScope.launch {
+            offlineUserDataRepository.clearPlaceIndexes()
+        }
+    }
+    fun addItemAll() {
+        viewModelScope.launch {
+            offlineUserDataRepository.addPlaceIndex(_placeArrayFirstIndex)
+        }
+    }
+    fun removeItemAll() {
+        viewModelScope.launch {
+            offlineUserDataRepository.deletePlaceIndex(_placeArrayFirstIndex)
+        }
     }
 
-    private var _selectedMinIntensityLevelIndex = MutableStateFlow(0)
-    val selectedMinIntensityLevelIndex: StateFlow<Int> = _selectedMinIntensityLevelIndex
+    // Min intensity level state
     fun setSelectedMinIntensityLevelIndex(index: Int) {
-        _selectedMinIntensityLevelIndex.value = index
+        viewModelScope.launch {
+            offlineUserDataRepository.setMinIntensityLevelIndex(index)
+        }
     }
+
+    // Background Work
+    fun setBackgroundWork() {
+        viewModelScope.launch {
+            val workRequest = OneTimeWorkRequestBuilder<NotificationsWorker>()
+                .addTag(NotificationsWorker.Constants.TAG)
+                .build()
+
+            WorkManager
+                .getInstance(context)
+                .enqueueUniqueWork(
+                    NotificationsWorker.Constants.NAME,
+                    ExistingWorkPolicy.REPLACE,
+                    workRequest
+                )
+        }
+    }
+    fun cancelBackgroundWork() {
+        viewModelScope.launch {
+            WorkManager
+                .getInstance(context)
+                .cancelUniqueWork(NotificationsWorker.Constants.NAME)
+        }
+    }
+}
+
+data class UserEditableSettings(
+    val isNotificationOn: Boolean,
+    val placeIndexes: List<Int>,
+    val minIntensityLevelIndex: Int,
+)
+
+sealed interface SettingsUiState {
+    object Loading : SettingsUiState
+    data class Success(val settings: UserEditableSettings) : SettingsUiState
 }

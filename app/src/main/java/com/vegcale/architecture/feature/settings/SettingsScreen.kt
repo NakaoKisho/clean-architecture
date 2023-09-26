@@ -17,18 +17,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -52,30 +51,48 @@ import com.vegcale.architecture.ui.theme.DefaultAlpha
 fun SettingsScreen(
     settingsViewModel: SettingsScreenViewModel = hiltViewModel()
 ) {
-    val notificationState by settingsViewModel.isNotificationOn.collectAsStateWithLifecycle()
-    val selectedPlacesState by settingsViewModel.selectedPlaces.collectAsStateWithLifecycle()
-    val selectedMinIntensityLevelIndexState by settingsViewModel.selectedMinIntensityLevelIndex.collectAsStateWithLifecycle()
+    val settingsUiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
     SettingsScreen(
-        notificationState = notificationState,
+        settingsUiState = settingsUiState,
         setNotification = settingsViewModel::setNotification,
-        selectedPlacesState = selectedPlacesState,
+        addAllPlaces = settingsViewModel::addAllPlaces,
+        removeAllPlaces = settingsViewModel::removeAllPlaces,
         addSelectedPlace = settingsViewModel::addSelectedPlace,
         removeSelectedPlace = settingsViewModel::removeSelectedPlace,
-        selectedMinIntensityLevelIndexState = selectedMinIntensityLevelIndexState,
-        setSelectedMinIntensityLevelIndex = settingsViewModel::setSelectedMinIntensityLevelIndex
+        addItemAll = settingsViewModel::addItemAll,
+        removeItemAll = settingsViewModel::removeItemAll,
+        setSelectedMinIntensityLevelIndex = settingsViewModel::setSelectedMinIntensityLevelIndex,
+        setBackgroundWork = settingsViewModel::setBackgroundWork,
+        cancelBackgroundWork = settingsViewModel::cancelBackgroundWork
     )
 }
 
 @Composable
 internal fun SettingsScreen(
-    notificationState: Boolean,
+    settingsUiState: SettingsUiState,
     setNotification: (Boolean) -> Unit,
-    selectedPlacesState: List<String>,
-    addSelectedPlace: (String) -> Unit,
-    removeSelectedPlace: (String) -> Unit,
-    selectedMinIntensityLevelIndexState: Int,
+    addAllPlaces: (Int) -> Unit,
+    removeAllPlaces: () -> Unit,
+    addSelectedPlace: (Int) -> Unit,
+    removeSelectedPlace: (Int) -> Unit,
+    addItemAll: () -> Unit,
+    removeItemAll: () -> Unit,
     setSelectedMinIntensityLevelIndex: (Int) -> Unit,
+    setBackgroundWork: () -> Unit,
+    cancelBackgroundWork: () -> Unit
 ) {
+    var notificationState = false
+    var selectedPlacesState = emptyList<Int>()
+    var selectedMinIntensityLevelIndexState = 0
+    when (settingsUiState) {
+        is SettingsUiState.Loading -> {}
+        is SettingsUiState.Success -> {
+            notificationState = settingsUiState.settings.isNotificationOn
+            selectedPlacesState = settingsUiState.settings.placeIndexes
+            selectedMinIntensityLevelIndexState = settingsUiState.settings.minIntensityLevelIndex
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,7 +102,17 @@ internal fun SettingsScreen(
     ) {
         // Notification
         SettingScreenItemTile(
-            modifier = Modifier.clickable { setNotification(!notificationState) },
+            modifier = Modifier
+                .clickable {
+                    setNotification(!notificationState)
+                    if (notificationState) {
+                        cancelBackgroundWork()
+                    } else {
+                        if (selectedPlacesState.isNotEmpty()) {
+                            setBackgroundWork()
+                        }
+                    }
+                },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.baseline_notifications_24),
@@ -145,7 +172,7 @@ internal fun SettingsScreen(
                 ) {
                     Column {
                         Text(
-                            text = "都道府県を選択してください(複数選択可)\n選択した都道府県で地震が発生した場合は通知します selected items: $selectedPlacesState"
+                            text = "都道府県を選択してください(複数選択可)\n選択した都道府県で地震が発生した場合は通知します"
                         )
 
                         val places = stringArrayResource(R.array.places_of_country)
@@ -153,14 +180,35 @@ internal fun SettingsScreen(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            val firstIndex = 0
                             items(places.size) {index ->
                                 SettingScreenItemTile(
                                     modifier = Modifier
                                         .clickable {
-                                            if (selectedPlacesState.contains(places[index])) {
-                                                removeSelectedPlace(places[index])
+                                            if (selectedPlacesState.isEmpty()) {
+                                                setBackgroundWork()
                                             } else {
-                                                addSelectedPlace(places[index])
+                                                cancelBackgroundWork()
+                                            }
+
+                                            if (index == firstIndex) {
+                                                if (selectedPlacesState.contains(firstIndex)) {
+                                                    removeAllPlaces()
+                                                } else {
+                                                    addAllPlaces(places.size)
+                                                }
+                                            } else {
+                                                if (selectedPlacesState.contains(index)) {
+                                                    removeSelectedPlace(index)
+                                                    if (selectedPlacesState.contains(firstIndex)) {
+                                                        removeItemAll()
+                                                    }
+                                                } else {
+                                                    addSelectedPlace(index)
+                                                    if (selectedPlacesState.size == places.size - 1) {
+                                                        addItemAll()
+                                                    }
+                                                }
                                             }
                                         },
                                 ) {
@@ -169,7 +217,7 @@ internal fun SettingsScreen(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Checkbox(
-                                            checked = selectedPlacesState.contains(places[index]),
+                                            checked = selectedPlacesState.contains(index),
                                             onCheckedChange = null
                                         )
                                         Text(
@@ -247,12 +295,12 @@ fun SettingScreenItemTile(
                 ) {
                     leadingIcon()
                 }
-                Divider(
+                VerticalDivider(
                     modifier = Modifier
-                        .width(2.dp)
                         .padding(vertical = 10.dp)
                         .heightIn(min = 30.dp, max = 50.dp)
-                        .alpha(DefaultAlpha)
+                        .alpha(DefaultAlpha),
+                    thickness = 2.dp,
                 )
             }
             Box(

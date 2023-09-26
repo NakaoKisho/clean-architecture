@@ -1,6 +1,5 @@
 package com.vegcale.architecture.feature.search
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -27,8 +26,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
@@ -110,7 +110,7 @@ fun SearchScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 internal fun SearchScreen(
     modifier: Modifier = Modifier,
@@ -146,7 +146,7 @@ internal fun SearchScreen(
 //                searchOnClick = {}
 //            )
 //        }
-    ) {
+    ) { _ ->
         // Button to update data
         Box(
             modifier = Modifier
@@ -240,7 +240,6 @@ internal fun SearchScreen(
 
             // Markers for epicenters
             clickedEarthquakeInfo?.points?.forEach { point ->
-                Log.i("test point", point.toString())
                 if (point.latitude == substituteText || point.longitude == substituteText) return@forEach
                 val markerState = rememberMarkerState(
                     position = LatLng(
@@ -513,7 +512,7 @@ private fun SearchTopAppBar(
             Box {
                 IconButton(onClick = { expanded = true }) {
                     Icon(
-                        imageVector = Icons.Filled.List,
+                        imageVector = Icons.AutoMirrored.Filled.List,
                         contentDescription = stringResource(R.string.list_icon_description),
                         tint = Color.White
                     )

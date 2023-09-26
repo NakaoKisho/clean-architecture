@@ -1,11 +1,18 @@
 package com.vegcale.architecture
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
-/**
- * @HiltAndroidApp でアノテーションをすることで、Hiltのコード生成を可能にします。
- * Application オブジェクトのライフサイクルにアタッチされ、依存関係を提供します。
- */
 @HiltAndroidApp
-class ArchitectureApplication : Application()
+class ArchitectureApplication : Application(), Configuration.Provider {
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
+}

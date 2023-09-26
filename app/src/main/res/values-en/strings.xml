@@ -7,6 +7,8 @@
     <string name="denied_location_permission">Location currently disabled due to denied permission.</string>
     <string name="depth">depth(km)</string>
     <string name="descending_order">descending order</string>
+    <string name="earthquake_info">Earthquake info</string>
+    <string name="earthquake_info_detail">Notify earthquake info that meets the places and intensity levels you set</string>
     <string name="epicenter">hypocenter</string>
     <string name="expand_less">expand less</string>
     <string name="expand_more">expand more</string>
@@ -61,6 +63,7 @@
         <item>intensity of 7</item>
     </string-array>
     <string-array name="places_of_country">
+        <item>All</item>
         <item>Hokkaido</item>
         <item>Aomori</item>
         <item>Iwate</item>
