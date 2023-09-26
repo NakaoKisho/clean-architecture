@@ -37,6 +37,7 @@ An android app for understanding the [app architecture][Android-architecture-en-
 * [![Kotlin][Kotlin]][Kotlin-url]
 * [![MockServer][MockServer]][MockServer-url]
 * [![Navigation][Navigation]][Navigation-url]
+* [![Proto DataStore][Proto-DataStore]][Proto-DataStore-url]
 * [![Retrofit][Retrofit]][Retrofit-url]
 <p align="right"><a href="#readme-top">back to top</a></p>
 
@@ -68,6 +69,7 @@ Nakao
 [LinkedIn]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [MockServer]: https://img.shields.io/badge/MockServer-black?style=for-the-badge&logoColor=white
 [Navigation]: https://img.shields.io/badge/Navigation-3DDC84?style=for-the-badge
+[Proto-DataStore]: https://img.shields.io/badge/Proto_DataStore-black?style=for-the-badge&link=https%3A%2F%2Fprotobuf.dev%2Fprogramming-guides%2Fproto3%2F
 [Retrofit]: https://img.shields.io/badge/retrofit-%2348b983?style=for-the-badge&link=https%3A%2F%2Fvegcale.com%2Fhome%2F
 [Twitter]: https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white
 [Wantedly]: https://img.shields.io/badge/wantedly-blue?style=for-the-badge&link=https%3A%2F%2Fvegcale.com%2Fhome%2F
@@ -83,6 +85,7 @@ Nakao
 [LinkedIn-url]: https://www.linkedin.com/in/kisho-nakao/
 [MockServer-url]: https://www.mock-server.com/mock_server/getting_started.html
 [Navigation-url]: https://developer.android.com/guide/navigation/get-started?hl=ja
+[Proto-DataStore-url]: https://protobuf.dev/programming-guides/proto3/
 [Retrofit-url]: https://square.github.io/retrofit/
 [Twitter-url]: https://twitter.com/@OCL89894812
 [vegcale-blog-url]: https://vegcale.com/home/
