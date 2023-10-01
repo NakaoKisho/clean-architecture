@@ -15,6 +15,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
@@ -22,7 +23,7 @@ import javax.inject.Named
 import javax.inject.Qualifier
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 abstract class EarthquakeApiModule {
     @Binds
     abstract fun bindUsgsEarthquakeApi(
@@ -41,7 +42,7 @@ abstract class EarthquakeApiModule {
 }
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object EarthquakeNetworkModule {
     private const val UsgsBaseUrl = BuildConfig.USGS_EARTHQUAKE_API_URL
     @Provides

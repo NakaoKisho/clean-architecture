@@ -1,5 +1,7 @@
-package com.vegcale.architecture.notifications
+package com.vegcale.architecture.notifications.di
 
+import com.vegcale.architecture.notifications.Notifier
+import com.vegcale.architecture.notifications.SystemTrayNotifier
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,6 +1,12 @@
 package com.vegcale.architecture.feature.settings
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -33,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -62,8 +69,6 @@ fun SettingsScreen(
         addItemAll = settingsViewModel::addItemAll,
         removeItemAll = settingsViewModel::removeItemAll,
         setSelectedMinIntensityLevelIndex = settingsViewModel::setSelectedMinIntensityLevelIndex,
-        setBackgroundWork = settingsViewModel::setBackgroundWork,
-        cancelBackgroundWork = settingsViewModel::cancelBackgroundWork
     )
 }
 
@@ -78,14 +83,14 @@ internal fun SettingsScreen(
     addItemAll: () -> Unit,
     removeItemAll: () -> Unit,
     setSelectedMinIntensityLevelIndex: (Int) -> Unit,
-    setBackgroundWork: () -> Unit,
-    cancelBackgroundWork: () -> Unit
 ) {
     var notificationState = false
     var selectedPlacesState = emptyList<Int>()
     var selectedMinIntensityLevelIndexState = 0
     when (settingsUiState) {
-        is SettingsUiState.Loading -> {}
+        is SettingsUiState.Loading -> {
+            LoadingTile()
+        }
         is SettingsUiState.Success -> {
             notificationState = settingsUiState.settings.isNotificationOn
             selectedPlacesState = settingsUiState.settings.placeIndexes
@@ -101,17 +106,11 @@ internal fun SettingsScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Notification
+        val intensityLevels = stringArrayResource(R.array.intensity_levels)
         SettingScreenItemTile(
             modifier = Modifier
                 .clickable {
                     setNotification(!notificationState)
-                    if (notificationState) {
-                        cancelBackgroundWork()
-                    } else {
-                        if (selectedPlacesState.isNotEmpty()) {
-                            setBackgroundWork()
-                        }
-                    }
                 },
             leadingIcon = {
                 Icon(
@@ -185,12 +184,6 @@ internal fun SettingsScreen(
                                 SettingScreenItemTile(
                                     modifier = Modifier
                                         .clickable {
-                                            if (selectedPlacesState.isEmpty()) {
-                                                setBackgroundWork()
-                                            } else {
-                                                cancelBackgroundWork()
-                                            }
-
                                             if (index == firstIndex) {
                                                 if (selectedPlacesState.contains(firstIndex)) {
                                                     removeAllPlaces()
@@ -239,7 +232,6 @@ internal fun SettingsScreen(
                             text = "通知する最小震度を選択してください(複数選択不可)\n選択した震度以上の場合は通知します"
                         )
 
-                        val intensityLevels = stringArrayResource(R.array.intensity_levels)
                         LazyColumn(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -270,6 +262,34 @@ internal fun SettingsScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LoadingTile(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.TopEnd
+    ) {
+        val infiniteTransition = rememberInfiniteTransition(label = "rememberInfiniteTransition in LoadingTile in Settings Screen")
+        val rotation by infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(1000, easing = LinearEasing),
+                repeatMode = RepeatMode.Restart
+            ),
+            label = "animateFloat in LoadingTile in Settings Screen"
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.baseline_loading),
+            contentDescription = "",
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .rotate(rotation),
+            tint = colorResource(R.color.blue_R000_G098_B160)
+        )
     }
 }
 
