@@ -1,6 +1,5 @@
 package com.vegcale.architecture.feature.settings
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vegcale.architecture.data.OfflineUserDataRepository
@@ -12,7 +11,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-@SuppressLint("StaticFieldLeak")
 class SettingsScreenViewModel @Inject constructor(
     private val offlineUserDataRepository: OfflineUserDataRepository
 ): ViewModel()  {

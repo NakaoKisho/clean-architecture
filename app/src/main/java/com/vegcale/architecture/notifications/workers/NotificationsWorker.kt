@@ -7,11 +7,13 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.vegcale.architecture.data.OfflineUserDataRepository
 import com.vegcale.architecture.data.model.SeismicIntensity2
+import com.vegcale.architecture.network.Dispatcher
+import com.vegcale.architecture.network.EmpDispatchers
 import com.vegcale.architecture.notifications.Notifier
 import com.vegcale.architecture.usecase.GetEarthquakeSummaryUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -21,6 +23,7 @@ import kotlinx.coroutines.withContext
 class NotificationsWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
+    @Dispatcher(EmpDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     private val getEarthquakeSummaryUseCase: GetEarthquakeSummaryUseCase,
     private val systemTrayNotifier: Notifier,
     private val offlineUserDataRepository: OfflineUserDataRepository
@@ -31,7 +34,7 @@ class NotificationsWorker @AssistedInject constructor(
 
         while (true) {
             if (!userData.isNotificationOn) continue
-            withContext(Dispatchers.IO) {
+            withContext(ioDispatcher) {
                 getEarthquakeSummaryUseCase(userData.places, minIntensityLevel).collectLatest {
                     if (it.isNotEmpty()) {
                         offlineUserDataRepository.setLatestEarthquakeDatetime(it.first().datetime)
