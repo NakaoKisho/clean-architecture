@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
-private const val DEFAULT_STRING_INPUT_VALUE = ""
 @HiltWorker
 class NotificationsWorker @AssistedInject constructor(
     @Assisted appContext: Context,
@@ -27,22 +26,13 @@ class NotificationsWorker @AssistedInject constructor(
     private val offlineUserDataRepository: OfflineUserDataRepository
 ): CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-        // Values from inputData
-        val places =
-            inputData.getStringArray("places") ?: arrayOf(DEFAULT_STRING_INPUT_VALUE)
-        if (places.contains(DEFAULT_STRING_INPUT_VALUE)) {
-            throw Error("Got unexpected Data in inputData")
-        }
-
-        // Values from proto datastore
         val userData = offlineUserDataRepository.userData.first()
-        val placeNames = getPlaceNames(places, userData.placeIndexes)
         val minIntensityLevel = convertToSeismicIntensity(userData.minIntensityLevelIndex)
 
         while (true) {
             if (!userData.isNotificationOn) continue
             withContext(Dispatchers.IO) {
-                getEarthquakeSummaryUseCase(placeNames, minIntensityLevel).collectLatest {
+                getEarthquakeSummaryUseCase(userData.places, minIntensityLevel).collectLatest {
                     if (it.isNotEmpty()) {
                         offlineUserDataRepository.setLatestEarthquakeDatetime(it.first().datetime)
                         offlineUserDataRepository.setLatestEarthquakeLatitude(it.first().latitude)
@@ -58,19 +48,6 @@ class NotificationsWorker @AssistedInject constructor(
             }
             delay(30000)
         }
-    }
-
-    private fun getPlaceNames(
-        places: Array<String>,
-        placeIndexes: List<Int>
-    ): MutableList<String> {
-        val placeNames = mutableListOf<String>()
-        for (index in placeIndexes) {
-            if (index == 0) continue
-            placeNames.add(places[index])
-        }
-
-        return placeNames
     }
 
     private fun convertToSeismicIntensity(intensityLevelIndex: Int) =

@@ -15,17 +15,17 @@ class OfflineUserDataRepository @Inject constructor(
     }
 
     // Places
-    override suspend fun addPlaceIndex(index: Int) {
-        empPreferencesDataSource.addPlaceIndex(index)
+    override suspend fun addPlace(place: String) {
+        empPreferencesDataSource.addPlace(place)
     }
-    override suspend fun clearPlaceIndexes() {
-        empPreferencesDataSource.clearPlaceIndexes()
+    override suspend fun clearPlaces() {
+        empPreferencesDataSource.clearPlaces()
     }
-    override suspend fun deletePlaceIndex(index: Int) {
-        empPreferencesDataSource.deletePlaceIndex(index)
+    override suspend fun deletePlace(place: String) {
+        empPreferencesDataSource.deletePlace(place)
     }
-    override suspend fun addPlaceIndex(indexes: List<Int>) {
-        empPreferencesDataSource.addPlaceIndex(indexes)
+    override suspend fun addPlaces(places: List<String>) {
+        empPreferencesDataSource.addPlaces(places)
     }
 
     // Min intensity level
@@ -34,21 +34,21 @@ class OfflineUserDataRepository @Inject constructor(
     }
 
     // Latest earthquake
-    val latestEarthquakeDatetime = empPreferencesDataSource.latestEarthquakeDatetime
-    suspend fun setLatestEarthquakeDatetime(datetime: String) {
+    override val latestEarthquakeDatetime = empPreferencesDataSource.latestEarthquakeDatetime
+    override val latestEarthquakeLatitude = empPreferencesDataSource.latestEarthquakeLatitude
+    override val latestEarthquakeLongitude = empPreferencesDataSource.latestEarthquakeLongitude
+    override val latestEarthquakeMagnitude = empPreferencesDataSource.latestEarthquakeMagnitude
+    override suspend fun setLatestEarthquakeDatetime(datetime: String) {
         val byteStringText = ByteString.copyFromUtf8(datetime)
         empPreferencesDataSource.setLatestEarthquakeDatetime(byteStringText)
     }
-    val latestEarthquakeLatitude = empPreferencesDataSource.latestEarthquakeLatitude
-    suspend fun setLatestEarthquakeLatitude(latitude: Double) {
+    override suspend fun setLatestEarthquakeLatitude(latitude: Double) {
         empPreferencesDataSource.setLatestEarthquakeLatitude(latitude)
     }
-    val latestEarthquakeLongitude = empPreferencesDataSource.latestEarthquakeLongitude
-    suspend fun setLatestEarthquakeLongitude(longitude: Double) {
+    override suspend fun setLatestEarthquakeLongitude(longitude: Double) {
         empPreferencesDataSource.setLatestEarthquakeLongitude(longitude)
     }
-    val latestEarthquakeMagnitude = empPreferencesDataSource.latestEarthquakeMagnitude
-    suspend fun setLatestEarthquakeMagnitude(magnitude: Double) {
+    override suspend fun setLatestEarthquakeMagnitude(magnitude: Double) {
         empPreferencesDataSource.setLatestEarthquakeMagnitude(magnitude)
     }
 }

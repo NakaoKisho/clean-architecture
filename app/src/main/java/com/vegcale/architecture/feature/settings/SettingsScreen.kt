@@ -63,11 +63,11 @@ fun SettingsScreen(
         settingsUiState = settingsUiState,
         setNotification = settingsViewModel::setNotification,
         addAllPlaces = settingsViewModel::addAllPlaces,
-        removeAllPlaces = settingsViewModel::removeAllPlaces,
-        addSelectedPlace = settingsViewModel::addSelectedPlace,
-        removeSelectedPlace = settingsViewModel::removeSelectedPlace,
+        clearPlaces = settingsViewModel::clearPlaces,
+        addPlace = settingsViewModel::addPlace,
+        deletePlace = settingsViewModel::deletePlace,
         addItemAll = settingsViewModel::addItemAll,
-        removeItemAll = settingsViewModel::removeItemAll,
+        deleteItemAll = settingsViewModel::deleteItemAll,
         setSelectedMinIntensityLevelIndex = settingsViewModel::setSelectedMinIntensityLevelIndex,
     )
 }
@@ -76,16 +76,16 @@ fun SettingsScreen(
 internal fun SettingsScreen(
     settingsUiState: SettingsUiState,
     setNotification: (Boolean) -> Unit,
-    addAllPlaces: (Int) -> Unit,
-    removeAllPlaces: () -> Unit,
-    addSelectedPlace: (Int) -> Unit,
-    removeSelectedPlace: (Int) -> Unit,
-    addItemAll: () -> Unit,
-    removeItemAll: () -> Unit,
+    addAllPlaces: (Array<String>) -> Unit,
+    clearPlaces: () -> Unit,
+    addPlace: (String) -> Unit,
+    deletePlace: (String) -> Unit,
+    addItemAll: (String) -> Unit,
+    deleteItemAll: (String) -> Unit,
     setSelectedMinIntensityLevelIndex: (Int) -> Unit,
 ) {
     var notificationState = false
-    var selectedPlacesState = emptyList<Int>()
+    var selectedPlacesState = emptyList<String>()
     var selectedMinIntensityLevelIndexState = 0
     when (settingsUiState) {
         is SettingsUiState.Loading -> {
@@ -93,7 +93,7 @@ internal fun SettingsScreen(
         }
         is SettingsUiState.Success -> {
             notificationState = settingsUiState.settings.isNotificationOn
-            selectedPlacesState = settingsUiState.settings.placeIndexes
+            selectedPlacesState = settingsUiState.settings.places
             selectedMinIntensityLevelIndexState = settingsUiState.settings.minIntensityLevelIndex
         }
     }
@@ -185,21 +185,21 @@ internal fun SettingsScreen(
                                     modifier = Modifier
                                         .clickable {
                                             if (index == firstIndex) {
-                                                if (selectedPlacesState.contains(firstIndex)) {
-                                                    removeAllPlaces()
+                                                if (selectedPlacesState.contains(places[firstIndex])) {
+                                                    clearPlaces()
                                                 } else {
-                                                    addAllPlaces(places.size)
+                                                    addAllPlaces(places)
                                                 }
                                             } else {
-                                                if (selectedPlacesState.contains(index)) {
-                                                    removeSelectedPlace(index)
-                                                    if (selectedPlacesState.contains(firstIndex)) {
-                                                        removeItemAll()
+                                                if (selectedPlacesState.contains(places[index])) {
+                                                    deletePlace(places[index])
+                                                    if (selectedPlacesState.contains(places[firstIndex])) {
+                                                        deleteItemAll(places[firstIndex])
                                                     }
                                                 } else {
-                                                    addSelectedPlace(index)
-                                                    if (selectedPlacesState.size == places.size - 1) {
-                                                        addItemAll()
+                                                    addPlace(places[index])
+                                                    if ((selectedPlacesState.size + 1) == (places.size - 1)) {
+                                                        addItemAll(places[firstIndex])
                                                     }
                                                 }
                                             }
@@ -210,7 +210,7 @@ internal fun SettingsScreen(
                                         verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Checkbox(
-                                            checked = selectedPlacesState.contains(index),
+                                            checked = selectedPlacesState.contains(places[index]),
                                             onCheckedChange = null
                                         )
                                         Text(

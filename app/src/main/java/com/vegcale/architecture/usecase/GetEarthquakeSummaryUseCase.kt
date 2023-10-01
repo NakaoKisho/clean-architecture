@@ -20,7 +20,7 @@ class GetEarthquakeSummaryUseCase @Inject constructor(
     private val offlineUserDataRepository: OfflineUserDataRepository
 ) {
     operator fun invoke(
-        placeNames: MutableList<String>,
+        placeNames: List<String>,
         minIntensityLevel: Byte,
         limit: Int = 1,
         offset: Int = 0

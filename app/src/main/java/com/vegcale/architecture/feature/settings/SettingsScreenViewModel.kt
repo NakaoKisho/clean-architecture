@@ -1,13 +1,10 @@
 package com.vegcale.architecture.feature.settings
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vegcale.architecture.data.OfflineUserDataRepository
-import com.vegcale.architecture.data.model.SeismicIntensity2
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -17,7 +14,6 @@ import javax.inject.Inject
 @HiltViewModel
 @SuppressLint("StaticFieldLeak")
 class SettingsScreenViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val offlineUserDataRepository: OfflineUserDataRepository
 ): ViewModel()  {
     val uiState =
@@ -27,7 +23,7 @@ class SettingsScreenViewModel @Inject constructor(
                 SettingsUiState.Success(
                     settings = UserEditableSettings(
                         isNotificationOn = it.isNotificationOn,
-                        placeIndexes = it.placeIndexes,
+                        places = it.places,
                         minIntensityLevelIndex = it.minIntensityLevelIndex,
                     )
                 )
@@ -46,40 +42,34 @@ class SettingsScreenViewModel @Inject constructor(
     }
 
     // Place state
-    fun addSelectedPlace(index: Int) {
+    fun addPlace(place: String) {
         viewModelScope.launch {
-            offlineUserDataRepository.addPlaceIndex(index)
+            offlineUserDataRepository.addPlace(place)
         }
     }
-    fun removeSelectedPlace(index: Int) {
+    fun deletePlace(place: String) {
         viewModelScope.launch {
-            offlineUserDataRepository.deletePlaceIndex(index)
+            offlineUserDataRepository.deletePlace(place)
         }
     }
-    private val _placeArrayFirstIndex = 0
-    fun addAllPlaces(arraySize: Int){
+    fun addAllPlaces(places: Array<String>){
         viewModelScope.launch {
-            val newList = mutableListOf<Int>()
-            for (count in _placeArrayFirstIndex until arraySize) {
-                newList.add(count)
-            }
-
-            offlineUserDataRepository.addPlaceIndex(newList)
+            offlineUserDataRepository.addPlaces(places.toList())
         }
     }
-    fun removeAllPlaces() {
+    fun clearPlaces() {
         viewModelScope.launch {
-            offlineUserDataRepository.clearPlaceIndexes()
+            offlineUserDataRepository.clearPlaces()
         }
     }
-    fun addItemAll() {
+    fun addItemAll(itemAll: String) {
         viewModelScope.launch {
-            offlineUserDataRepository.addPlaceIndex(_placeArrayFirstIndex)
+            offlineUserDataRepository.addPlace(itemAll)
         }
     }
-    fun removeItemAll() {
+    fun deleteItemAll(itemAll: String) {
         viewModelScope.launch {
-            offlineUserDataRepository.deletePlaceIndex(_placeArrayFirstIndex)
+            offlineUserDataRepository.deletePlace(itemAll)
         }
     }
 
@@ -89,36 +79,11 @@ class SettingsScreenViewModel @Inject constructor(
             offlineUserDataRepository.setMinIntensityLevelIndex(index)
         }
     }
-    private fun getPlaceNames(
-        places: Array<String>,
-        placeIndexes: List<Int>
-    ):  MutableList<String> {
-        val placeNames = mutableListOf<String>()
-        for (index in placeIndexes) {
-            if (index == 0) continue
-            placeNames.add(places[index])
-        }
-
-        return placeNames
-    }
-    private fun convertToSeismicIntensity(intensityLevelIndex: Int) =
-        when (intensityLevelIndex) {
-            0 -> SeismicIntensity2.IntensityOfOne
-            1 -> SeismicIntensity2.IntensityOfTwo
-            2 -> SeismicIntensity2.IntensityOfThree
-            3 -> SeismicIntensity2.IntensityOfFour
-            4 -> SeismicIntensity2.IntensityOfLowerFive
-            5 -> SeismicIntensity2.IntensityOfUpperFive
-            6 -> SeismicIntensity2.IntensityOfLowerSix
-            7 -> SeismicIntensity2.IntensityOfUpperSix
-            8 -> SeismicIntensity2.IntensityOfSeven
-            else -> throw Error("intensityLevel should be from 0 to 8")
-        }
 }
 
 data class UserEditableSettings(
     val isNotificationOn: Boolean,
-    val placeIndexes: List<Int>,
+    val places: List<String>,
     val minIntensityLevelIndex: Int,
 )
 

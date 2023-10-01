@@ -15,7 +15,7 @@ class EmpPreferencesDataSource @Inject constructor(
         .map {
             UserData(
                 isNotificationOn = it.isNotificationOn,
-                placeIndexes = it.placeIndexesList,
+                places = it.placesList,
                 minIntensityLevelIndex = it.minIntensityLevelIndex
             )
         }
@@ -31,50 +31,48 @@ class EmpPreferencesDataSource @Inject constructor(
     }
 
     // Places
-    suspend fun addPlaceIndex(index: Int) {
+    suspend fun addPlace(place: String) {
         try {
             userPreferences.updateData {
-                it.toBuilder().addPlaceIndexes(index).build()
+                it.toBuilder().addPlaces(place).build()
             }
         } catch (ioException: IOException) {
-            Log.e("EmpPreferences", "Failed to addPlaceIndex", ioException)
+            Log.e("EmpPreferences", "Failed to addPlace", ioException)
         }
     }
-    suspend fun clearPlaceIndexes() {
+    suspend fun clearPlaces() {
         try {
             userPreferences.updateData {
-                it.toBuilder().clearPlaceIndexes().build()
+                it.toBuilder().clearPlaces().build()
             }
         } catch (ioException: IOException) {
-            Log.e("EmpPreferences", "Failed to clearPlaceIndexes", ioException)
+            Log.e("EmpPreferences", "Failed to clearPlaces", ioException)
         }
     }
-    suspend fun deletePlaceIndex(index: Int) {
+    suspend fun deletePlace(place: String) {
         try {
             userPreferences.updateData {
-                val newList = it.toBuilder().placeIndexesList.toMutableList()
-                newList.remove(index)
+                val newList = it.toBuilder().placesList.toMutableList()
+                newList.remove(place)
                 it.toBuilder()
-                    .clearPlaceIndexes()
-                    .addAllPlaceIndexes(newList)
+                    .clearPlaces()
+                    .addAllPlaces(newList)
                     .build()
             }
         } catch (ioException: IOException) {
-            Log.e("EmpPreferences", "Failed to deletePlaceIndex", ioException)
+            Log.e("EmpPreferences", "Failed to deletePlace", ioException)
         }
     }
-    suspend fun addPlaceIndex(indexes: List<Int>) {
+    suspend fun addPlaces(places: List<String>) {
         try {
             userPreferences.updateData {
-                with (it.toBuilder()) {
-                    this.clearPlaceIndexes()
-                    this.addAllPlaceIndexes(indexes)
-
-                    return@with this
-                }.build()
+                it.toBuilder()
+                    .clearPlaces()
+                    .addAllPlaces(places)
+                    .build()
             }
         } catch (ioException: IOException) {
-            Log.e("EmpPreferences", "Failed to addPlaceIndex", ioException)
+            Log.e("EmpPreferences", "Failed to addPlaces", ioException)
         }
     }
 
