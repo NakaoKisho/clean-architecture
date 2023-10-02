@@ -8,7 +8,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.Icon
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -25,7 +24,7 @@ private const val EARTHQUAKE_NOTIFICATION_CHANNEL_ID = ""
 class SystemTrayNotifier @Inject constructor(
     @ApplicationContext private val context: Context
 ): Notifier {
-    override fun postNewsNotifications() {
+    override fun postNewsNotifications(contentTitle: String, contextText: String) {
         with(context) {
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -38,12 +37,15 @@ class SystemTrayNotifier @Inject constructor(
             val pendingIntent = this.earthquakePendingIntent()
             val earthquakeNotification = createNotification {
                 setSmallIcon(R.drawable.baseline_access_time_24)
-                .setLargeIcon(Icon.createWithResource(context, R.drawable.baseline_access_time_24))
                 .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
-                .setVibrate(longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400))
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentTitle("textTitle")
-                .setContentText("textContent")
+                .setContentTitle(contentTitle)
+                .setContentText(contextText)
+                .setStyle(
+                    NotificationCompat
+                        .BigTextStyle()
+                        .bigText(contextText)
+                )
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
             }
@@ -76,8 +78,6 @@ private fun Context.createNotificationChannel() {
         importance
     ).apply {
         description = descriptionText
-        enableVibration(true)
-        vibrationPattern = longArrayOf(100, 200, 300, 400, 500, 400, 300, 200, 400)
     }
     val notificationManager =
         getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -36,17 +36,21 @@ class NotificationsWorker @AssistedInject constructor(
             if (!userData.isNotificationOn) continue
             withContext(ioDispatcher) {
                 getEarthquakeSummaryUseCase(userData.places, minIntensityLevel).collectLatest {
-                    if (it.isNotEmpty()) {
-                        offlineUserDataRepository.setLatestEarthquakeDatetime(it.first().datetime)
-                        offlineUserDataRepository.setLatestEarthquakeLatitude(it.first().latitude)
-                        offlineUserDataRepository.setLatestEarthquakeLongitude(it.first().longitude)
-                        offlineUserDataRepository.setLatestEarthquakeMagnitude(it.first().magnitude)
-                    }
+                    if (it.isEmpty()) return@collectLatest
+                    offlineUserDataRepository.setLatestEarthquakeDatetime(it.first().datetime)
+                    offlineUserDataRepository.setLatestEarthquakeLatitude(it.first().latitude)
+                    offlineUserDataRepository.setLatestEarthquakeLongitude(it.first().longitude)
+                    offlineUserDataRepository.setLatestEarthquakeMagnitude(it.first().magnitude)
 
-                    for (summary in it) {
-                        if (summary.points.isEmpty()) continue
-                        systemTrayNotifier.postNewsNotifications()
-                    }
+                    val summary = it.first()
+                    val contentTitle = String.format("%sで地震が発生しました", summary.place)
+                    val contentText = String.format(
+                        "場所:%s\n時間:%s\nマグニチュード:%s",
+                        summary.place,
+                        summary.datetime,
+                        summary.magnitude
+                    )
+                    systemTrayNotifier.postNewsNotifications(contentTitle, contentText)
                 }
             }
             delay(30000)
