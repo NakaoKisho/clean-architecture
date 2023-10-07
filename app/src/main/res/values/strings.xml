@@ -5,6 +5,7 @@
     <string name="closeness_order">現在地に近い順</string>
     <string name="date_and_time">発生日時</string>
     <string name="denied_location_permission">位置情報の取得が許可されていません</string>
+    <string name="denied_notification_permission">通知が許可されていません</string>
     <string name="depth">深さ(km)</string>
     <string name="descending_order">降順</string>
     <string name="earthquake_info">地震情報</string>
@@ -22,10 +23,19 @@
     <string name="longitude">経度</string>
     <string name="maximum_intensity">最大震度</string>
     <string name="magnitude">マグニチュード</string>
+    <string name="min_intensity_level_select_text">最小震度を選択してください</string>
     <string name="no">いいえ</string>
+    <string name="notification_description_error_text">都道府県を選択してください</string>
+    <string name="notification_description_text">選択した都道府県で選択した震度以上を観測した場合は通知でお知らせします</string>
+    <string name="notification_icon_content_description">通知アイコン</string>
+    <string name="notification_permission_icon_content_description">通知アイコン</string>
+    <string name="notification_text">通知設定</string>
     <string name="no_data">情報なし</string>
     <string name="observation_place_name">地点名</string>
     <string name="observation_places_info">震度観測地点情報</string>
+    <string name="permission_explanation_text">地震情報を通知してもよろしいですか？</string>
+    <string name="permission_explanation_title">通知</string>
+    <string name="place_select_text">都道府県を選択してください(複数選択可)</string>
     <string name="search_icon_description">検索ボタン</string>
     <string name="seismic_intensity">震度</string>
     <string name="seismic_intensity_level_four">4</string>

@@ -5,6 +5,7 @@
     <string name="closeness_order">closeness to current location order</string>
     <string name="date_and_time">date and time</string>
     <string name="denied_location_permission">Location currently disabled due to denied permission.</string>
+    <string name="denied_notification_permission">Notification currently disabled due to denied permission</string>
     <string name="depth">depth(km)</string>
     <string name="descending_order">descending order</string>
     <string name="earthquake_info">Earthquake info</string>
@@ -22,10 +23,19 @@
     <string name="longitude">longitude</string>
     <string name="maximum_intensity">maximum intensity</string>
     <string name="magnitude">magnitude</string>
+    <string name="min_intensity_level_select_text">Please select minimum intensity level</string>
     <string name="no">No</string>
+    <string name="notification_description_error_text">Please select places</string>
+    <string name="notification_description_text">If an earthquake hits the selected place(s) and the intensity level is upper than selected one, this app notifies it\'s info</string>
+    <string name="notification_icon_content_description">notification icon</string>
+    <string name="notification_permission_icon_content_description">notification icon</string>
+    <string name="notification_text">Notification</string>
     <string name="no_data">no data</string>
     <string name="observation_place_name">place name</string>
     <string name="observation_places_info">observation places info</string>
+    <string name="permission_explanation_text">Allow this app to notify earthquake info?？</string>
+    <string name="permission_explanation_title">Notification</string>
+    <string name="place_select_text">Please select places</string>
     <string name="search_icon_description">search button</string>
     <string name="seismic_intensity">intensity level</string>
     <string name="seismic_intensity_level_four">4</string>
