@@ -9,6 +9,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +27,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Search
@@ -79,6 +79,7 @@ import com.google.maps.android.compose.rememberMarkerState
 import com.vegcale.architecture.R
 import com.vegcale.architecture.data.model.EarthquakeInfo
 import com.vegcale.architecture.data.model.Points
+import com.vegcale.architecture.ui.components.AdmobBanner
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 import com.vegcale.architecture.ui.theme.BoldAlpha
 import com.vegcale.architecture.ui.theme.DefaultAlpha
@@ -110,7 +111,7 @@ fun SearchScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchScreen(
     modifier: Modifier = Modifier,
@@ -147,169 +148,178 @@ internal fun SearchScreen(
 //            )
 //        }
     ) { _ ->
-        // Button to update data
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .zIndex(1f),
-            contentAlignment = Alignment.TopStart
-        ) {
-            SmallFloatingActionButton(
-                onClick = {
-                    updateData()
-                },
-                modifier = Modifier
-                    .padding(
-                        start = 8.dp,
-                        top = 8.dp
-                    ),
-                containerColor = Color.Transparent,
-                elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 0.dp,
-                    pressedElevation = 0.dp,
-                    focusedElevation = 0.dp,
-                    hoveredElevation = 0.dp,
-                )
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.baseline_cached_24),
-                    contentDescription = null,
-                    tint = colorResource(R.color.blue_R000_G098_B160),
-                )
-            }
-        }
-
-        // Google Map
-        var zoomLevel by rememberSaveable { mutableFloatStateOf(0f) }
-        val cameraPositionState = rememberEmpCameraPositionState(
-            inputs = arrayOf(datetime)
-        ) {
-            this.position = CameraPosition(
-                latLng,
-                zoomLevel,
-                0f,
-                0f
+        Column {
+            // Admob
+            AdmobBanner(
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
             )
-        }
-        zoomLevel = cameraPositionState.position.zoom
-        val googleMapUiSettings = DefaultMapUiSettings
-        val substituteText = stringResource(R.string.no_data)
-        val scope = rememberCoroutineScope()
-        val lazyListState = rememberLazyListState()
-        GoogleMap(
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState,
-            uiSettings = googleMapUiSettings,
-            onMapClick = {
-                isSheetExpanded = false
-                resetEarthquakeInfo()
-            }
-        ) {
-            if (earthquakeInfo.isEmpty()) return@GoogleMap
 
-            earthquakeInfo.forEachIndexed { index, hypocenter ->
-                val markerState = rememberMarkerState(
-                    position = LatLng(
-                        hypocenter.latitude,
-                        hypocenter.longitude
-                    )
-                )
-                Marker(
-                    state = markerState,
-                    title = hypocenter.place,
-                    snippet = hypocenter.place,
-                    onClick = { _ ->
-                        isSheetExpanded = true
-                        updateEarthquakeInfo(
-                            hypocenter.datetime,
-                            hypocenter.place,
-                            hypocenter.latitude,
-                            hypocenter.longitude,
-                            hypocenter.magnitude,
-                            hypocenter.depth,
-                            hypocenter.points,
-                            substituteText
-                        )
-                        scope.launch {
-                            lazyListState.animateScrollToItem(index)
-                        }
-                        false
-                    }
-                )
-            }
-
-            // Markers for epicenters
-            clickedEarthquakeInfo?.points?.forEach { point ->
-                if (point.latitude == substituteText || point.longitude == substituteText) return@forEach
-                val markerState = rememberMarkerState(
-                    position = LatLng(
-                        point.latitude.toDouble(),
-                        point.longitude.toDouble()
-                    )
-                )
-                Marker(
-                    state = markerState,
-                    icon = BitmapHelper().vectorToBitmap(point.scaleDrawableId),
-                    title = point.place,
-                    snippet = stringResource(point.scaleStringId)
-                )
-            }
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = sheetPeekHeight),
-            contentAlignment = Alignment.BottomStart
-        ) {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                state = lazyListState
-            ) {
-                items(earthquakeInfo.size) {
-                    val data = earthquakeInfo[it]
-                    ElevatedCard(
+            Box {
+                // Button to update data
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .zIndex(1f),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    SmallFloatingActionButton(
+                        onClick = {
+                            updateData()
+                        },
                         modifier = Modifier
-                            .width(220.dp)
-                            .height(200.dp)
-                            .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
-                            .clickable {
+                            .padding(
+                                start = 8.dp,
+                                top = 8.dp
+                            ),
+                        containerColor = Color.Transparent,
+                        elevation = FloatingActionButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            focusedElevation = 0.dp,
+                            hoveredElevation = 0.dp,
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_cached_24),
+                            contentDescription = null,
+                            tint = colorResource(R.color.blue_R000_G098_B160),
+                        )
+                    }
+                }
+
+                // Google Map
+                var zoomLevel by rememberSaveable { mutableFloatStateOf(0f) }
+                val cameraPositionState = rememberEmpCameraPositionState(
+                    inputs = arrayOf(datetime)
+                ) {
+                    this.position = CameraPosition(
+                        latLng,
+                        zoomLevel,
+                        0f,
+                        0f
+                    )
+                }
+                zoomLevel = cameraPositionState.position.zoom
+                val googleMapUiSettings = DefaultMapUiSettings
+                val substituteText = stringResource(R.string.no_data)
+                val scope = rememberCoroutineScope()
+                val lazyListState = rememberLazyListState()
+                GoogleMap(
+                    modifier = Modifier.fillMaxSize(),
+                    cameraPositionState = cameraPositionState,
+                    uiSettings = googleMapUiSettings,
+                    onMapClick = {
+                        isSheetExpanded = false
+                        resetEarthquakeInfo()
+                    }
+                ) {
+                    if (earthquakeInfo.isEmpty()) return@GoogleMap
+
+                    earthquakeInfo.forEachIndexed { index, hypocenter ->
+                        val markerState = rememberMarkerState(
+                            position = LatLng(
+                                hypocenter.latitude,
+                                hypocenter.longitude
+                            )
+                        )
+                        Marker(
+                            state = markerState,
+                            title = hypocenter.place,
+                            snippet = hypocenter.place,
+                            onClick = { _ ->
                                 isSheetExpanded = true
                                 updateEarthquakeInfo(
-                                    data.datetime,
-                                    data.place,
-                                    data.latitude,
-                                    data.longitude,
-                                    data.magnitude,
-                                    data.depth,
-                                    data.points,
+                                    hypocenter.datetime,
+                                    hypocenter.place,
+                                    hypocenter.latitude,
+                                    hypocenter.longitude,
+                                    hypocenter.magnitude,
+                                    hypocenter.depth,
+                                    hypocenter.points,
                                     substituteText
                                 )
                                 scope.launch {
-                                    lazyListState.animateScrollToItem(it)
+                                    lazyListState.animateScrollToItem(index)
                                 }
+                                false
                             }
+                        )
+                    }
+
+                    // Markers for epicenters
+                    clickedEarthquakeInfo?.points?.forEach { point ->
+                        if (point.latitude == substituteText || point.longitude == substituteText) return@forEach
+                        val markerState = rememberMarkerState(
+                            position = LatLng(
+                                point.latitude.toDouble(),
+                                point.longitude.toDouble()
+                            )
+                        )
+                        Marker(
+                            state = markerState,
+                            icon = BitmapHelper().vectorToBitmap(point.scaleDrawableId),
+                            title = point.place,
+                            snippet = stringResource(point.scaleStringId)
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = sheetPeekHeight),
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        state = lazyListState
                     ) {
-                        SearchScreenCard(
-                            modifier = Modifier.weight(1f),
-                            painter = painterResource(R.drawable.baseline_access_time_24),
-                            contentDescription = stringResource(R.string.date_and_time),
-                            titleText = stringResource(R.string.date_and_time),
-                            detailText = data.datetime,
-                        )
-                        SearchScreenCard(
-                            modifier = Modifier.weight(1f),
-                            painter = painterResource(R.drawable.baseline_location_on_24),
-                            contentDescription = stringResource(R.string.epicenter),
-                            titleText = stringResource(R.string.epicenter),
-                            detailText = data.place,
-                        )
-                        SearchScreenCard(
-                            modifier = Modifier.weight(1f),
-                            painter = painterResource(R.drawable.baseline_landslide_24),
-                            contentDescription = stringResource(R.string.magnitude),
-                            titleText = stringResource(R.string.magnitude),
-                            detailText = data.magnitude.toString(),
-                        )
+                        items(earthquakeInfo.size) {
+                            val data = earthquakeInfo[it]
+                            ElevatedCard(
+                                modifier = Modifier
+                                    .width(220.dp)
+                                    .height(200.dp)
+                                    .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
+                                    .clickable {
+                                        isSheetExpanded = true
+                                        updateEarthquakeInfo(
+                                            data.datetime,
+                                            data.place,
+                                            data.latitude,
+                                            data.longitude,
+                                            data.magnitude,
+                                            data.depth,
+                                            data.points,
+                                            substituteText
+                                        )
+                                        scope.launch {
+                                            lazyListState.animateScrollToItem(it)
+                                        }
+                                    }
+                            ) {
+                                SearchScreenCard(
+                                    modifier = Modifier.weight(1f),
+                                    painter = painterResource(R.drawable.baseline_access_time_24),
+                                    contentDescription = stringResource(R.string.date_and_time),
+                                    titleText = stringResource(R.string.date_and_time),
+                                    detailText = data.datetime,
+                                )
+                                SearchScreenCard(
+                                    modifier = Modifier.weight(1f),
+                                    painter = painterResource(R.drawable.baseline_location_on_24),
+                                    contentDescription = stringResource(R.string.epicenter),
+                                    titleText = stringResource(R.string.epicenter),
+                                    detailText = data.place,
+                                )
+                                SearchScreenCard(
+                                    modifier = Modifier.weight(1f),
+                                    painter = painterResource(R.drawable.baseline_landslide_24),
+                                    contentDescription = stringResource(R.string.magnitude),
+                                    titleText = stringResource(R.string.magnitude),
+                                    detailText = data.magnitude.toString(),
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -1,7 +1,6 @@
 package com.vegcale.architecture.ui
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,7 +16,6 @@ import com.vegcale.architecture.navigation.tabRowScreens
 import com.vegcale.architecture.ui.components.EmpTopAppBar
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EarthquakeMapApp() {
     ArchitectureTheme {

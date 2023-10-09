@@ -49,3 +49,9 @@ fun P2pquakeInfoEarthquake.getDatetime(): String {
 
     return localDatetime.format(displayFormatter)
 }
+
+fun P2pquakeInfo.getIsoString(): String =
+    time
+        .replace("/", "-")
+        .replace(" ", "T")
+        .plus("+09:00")

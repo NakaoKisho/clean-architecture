@@ -75,6 +75,7 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vegcale.architecture.R
+import com.vegcale.architecture.ui.components.AdmobBanner
 import com.vegcale.architecture.ui.theme.BoldAlpha
 import com.vegcale.architecture.ui.theme.DefaultAlpha
 import com.vegcale.architecture.util.isPermissionGranted
@@ -208,6 +209,9 @@ internal fun SettingsScreen(
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Admob
+            AdmobBanner()
+
             // Notification
             val intensityLevels = stringArrayResource(R.array.intensity_levels)
             SettingScreenItemTile(

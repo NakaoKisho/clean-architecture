@@ -29,31 +29,32 @@ class NotificationsWorker @AssistedInject constructor(
     private val offlineUserDataRepository: OfflineUserDataRepository
 ): CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-        val userData = offlineUserDataRepository.userData.first()
-        val minIntensityLevel = convertToSeismicIntensity(userData.minIntensityLevelIndex)
-
         while (true) {
-            if (!userData.isNotificationOn) continue
-            withContext(ioDispatcher) {
-                getEarthquakeSummaryUseCase(userData.places, minIntensityLevel).collectLatest {
-                    if (it.isEmpty()) return@collectLatest
-                    offlineUserDataRepository.setLatestEarthquakeDatetime(it.first().datetime)
-                    offlineUserDataRepository.setLatestEarthquakeLatitude(it.first().latitude)
-                    offlineUserDataRepository.setLatestEarthquakeLongitude(it.first().longitude)
-                    offlineUserDataRepository.setLatestEarthquakeMagnitude(it.first().magnitude)
+            val userData = offlineUserDataRepository.userData.first()
+            val minIntensityLevel = convertToSeismicIntensity(userData.minIntensityLevelIndex)
+            if (userData.isNotificationOn) {
+                withContext(ioDispatcher) {
+                    getEarthquakeSummaryUseCase(userData.places, minIntensityLevel).collectLatest {
+                        if (it.isEmpty()) return@collectLatest
+                        offlineUserDataRepository.setLatestEarthquakeDatetime(it.first().datetime)
+                        offlineUserDataRepository.setLatestEarthquakeLatitude(it.first().latitude)
+                        offlineUserDataRepository.setLatestEarthquakeLongitude(it.first().longitude)
+                        offlineUserDataRepository.setLatestEarthquakeMagnitude(it.first().magnitude)
 
-                    val summary = it.first()
-                    val contentTitle = String.format("%sで地震が発生しました", summary.place)
-                    val contentText = String.format(
-                        "場所:%s\n時間:%s\nマグニチュード:%s",
-                        summary.place,
-                        summary.datetime,
-                        summary.magnitude
-                    )
-                    systemTrayNotifier.postNewsNotifications(contentTitle, contentText)
+                        val summary = it.first()
+                        val contentTitle = String.format("%sで地震が発生しました", summary.place)
+                        val contentText = String.format(
+                            "場所:%s\n時間:%s\nマグニチュード:%s",
+                            summary.place,
+                            summary.datetime,
+                            summary.magnitude
+                        )
+                        systemTrayNotifier.postNewsNotifications(contentTitle, contentText)
+                    }
                 }
             }
-            delay(30000)
+            delay(5000)
+//            delay(30000)
         }
     }
 

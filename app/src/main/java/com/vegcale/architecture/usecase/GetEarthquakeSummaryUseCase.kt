@@ -7,11 +7,16 @@ import com.vegcale.architecture.data.YahooGeocodeRepository2
 import com.vegcale.architecture.data.model.EarthquakeSummary
 import com.vegcale.architecture.data.model.PointDetail
 import com.vegcale.architecture.data.model.getDatetime
+import com.vegcale.architecture.data.model.getIsoString
 import com.vegcale.architecture.data.model.getLatitude
 import com.vegcale.architecture.data.model.getLongitude
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.periodUntil
 import javax.inject.Inject
 
 class GetEarthquakeSummaryUseCase @Inject constructor(
@@ -26,21 +31,36 @@ class GetEarthquakeSummaryUseCase @Inject constructor(
         offset: Int = 0
     ): Flow<List<EarthquakeSummary>> {
         val yahooApiAppId = BuildConfig.YAHOO_CLIENT_ID
+        val timeDifferenceZero = 0
+        val timeDifferenceTen = -10
 
         return flow {
             emit(
                 p2pquakeRepository
                     .getInfo(limit, offset)
                     .filter { p2pquakeInfo ->
-                        val previousEarthquakeDatetime =
+                        val previousEarthquakeDatetimeText =
                             offlineUserDataRepository.latestEarthquakeDatetime.first()
+                        val currentInstant = Clock.System.now()
+                        val previousInstant = Instant.parse(p2pquakeInfo.getIsoString())
+                        val timeDifference = currentInstant.periodUntil(previousInstant, TimeZone.UTC)
+                        val yearDifference = timeDifference.years
+                        val monthDifference = timeDifference.months
+                        val dayDifference = timeDifference.days
+                        val hourDifference = timeDifference.hours
+                        val minuteDifference = timeDifference.minutes
                         val previousEarthquakeLatitude =
                             offlineUserDataRepository.latestEarthquakeLatitude.first()
                         val previousEarthquakeLongitude =
                             offlineUserDataRepository.latestEarthquakeLongitude.first()
                         val previousEarthquakeMagnitude =
                             offlineUserDataRepository.latestEarthquakeMagnitude.first()
-                        (p2pquakeInfo.earthquake.getDatetime() != previousEarthquakeDatetime &&
+                        (p2pquakeInfo.earthquake.getDatetime() != previousEarthquakeDatetimeText &&
+                                yearDifference == timeDifferenceZero &&
+                                monthDifference == timeDifferenceZero &&
+                                dayDifference == timeDifferenceZero &&
+                                hourDifference == timeDifferenceZero &&
+                                minuteDifference >= timeDifferenceTen &&
                                 p2pquakeInfo.earthquake.hypocenter.latitude != previousEarthquakeLatitude &&
                                 p2pquakeInfo.earthquake.hypocenter.longitude != previousEarthquakeLongitude &&
                                 p2pquakeInfo.earthquake.hypocenter.magnitude != previousEarthquakeMagnitude)
