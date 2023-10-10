@@ -53,8 +53,7 @@ class NotificationsWorker @AssistedInject constructor(
                     }
                 }
             }
-            delay(5000)
-//            delay(30000)
+            delay(30000)
         }
     }
 

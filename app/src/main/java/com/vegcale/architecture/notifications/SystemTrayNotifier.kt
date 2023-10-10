@@ -36,7 +36,7 @@ class SystemTrayNotifier @Inject constructor(
 
             val pendingIntent = this.earthquakePendingIntent()
             val earthquakeNotification = createNotification {
-                setSmallIcon(R.drawable.baseline_access_time_24)
+                setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentTitle(contentTitle)
