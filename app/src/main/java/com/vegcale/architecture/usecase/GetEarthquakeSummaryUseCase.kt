@@ -1,8 +1,8 @@
 package com.vegcale.architecture.usecase
 
 import com.vegcale.architecture.BuildConfig
-import com.vegcale.architecture.data.OfflineUserDataRepository
 import com.vegcale.architecture.data.P2pquakeRepository2
+import com.vegcale.architecture.data.UserDataRepository
 import com.vegcale.architecture.data.YahooGeocodeRepository2
 import com.vegcale.architecture.data.model.EarthquakeSummary
 import com.vegcale.architecture.data.model.PointDetail
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class GetEarthquakeSummaryUseCase @Inject constructor(
     private val p2pquakeRepository: P2pquakeRepository2,
     private val yahooGeocodeRepository: YahooGeocodeRepository2,
-    private val offlineUserDataRepository: OfflineUserDataRepository
+    private val offlineUserDataRepository: UserDataRepository
 ) {
     operator fun invoke(
         placeNames: List<String>,
