@@ -149,12 +149,9 @@ internal fun SearchScreen(
 //        }
     ) { _ ->
         Column {
-            // Admob
-            AdmobBanner(
-                modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
-            )
-
-            Box {
+            Box(
+                modifier = Modifier.weight(weight = 1f)
+            ) {
                 // Button to update data
                 Box(
                     modifier = Modifier
@@ -323,6 +320,9 @@ internal fun SearchScreen(
                     }
                 }
             }
+            AdmobBanner(
+                modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
+            )
         }
     }
 }
@@ -787,10 +787,4 @@ fun SearchScreenPreview() {
             datetime = ""
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BottomSheetContentPreview() {
-    BottomSheetContent(itemDetail = null)
 }
