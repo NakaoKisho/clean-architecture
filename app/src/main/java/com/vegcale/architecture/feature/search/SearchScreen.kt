@@ -138,17 +138,15 @@ internal fun SearchScreen(
         sheetContent = { BottomSheetContent(clickedEarthquakeInfo) },
         modifier = modifier,
         sheetPeekHeight = sheetPeekHeight,
-        sheetDragHandle = { BottomSheetDefaults.DragHandle(
-            color = MaterialTheme.colorScheme.primary
-        ) },
-//        topBar = {
-//            SearchTopAppBar(
-//                listOnClick = {},
-//                searchOnClick = {}
-//            )
-//        }
+        sheetDragHandle = {
+            BottomSheetDefaults.DragHandle(
+                color = MaterialTheme.colorScheme.primary
+            )
+        },
     ) { _ ->
         Column {
+            AdmobBanner()
+
             Box(
                 modifier = Modifier.weight(weight = 1f)
             ) {
@@ -320,9 +318,6 @@ internal fun SearchScreen(
                     }
                 }
             }
-            AdmobBanner(
-                modifier = Modifier.background(color = MaterialTheme.colorScheme.primary)
-            )
         }
     }
 }
