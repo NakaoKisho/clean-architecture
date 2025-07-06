@@ -8,7 +8,6 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.vegcale.architecture.HiltComponentActivity
 import com.vegcale.architecture.navigation.EmpNavHost
 import com.vegcale.architecture.ui.EarthquakeMapApp
 import dagger.hilt.android.testing.HiltAndroidRule

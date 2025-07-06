@@ -49,6 +49,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -103,12 +104,15 @@ fun MainScreen(
     val state = viewModel.uiState
     val itemState = state.earthquakeData.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
-    var items = emptyList<EarthquakeInfo>()
+    val items = remember { mutableStateListOf<EarthquakeInfo>() }
     val loadErrorMessage = stringResource(R.string.load_error)
     Log.i(TAG, itemState.value.toString())
     when (itemState.value) {
         is MainActivityUiState.Success -> {
-            items = (itemState.value as MainActivityUiState.Success).earthquakeData
+            (itemState.value as MainActivityUiState.Success).earthquakeData.forEach {
+                if (items.contains(it)) return@forEach
+                items.add(it)
+            }
         }
 
         is MainActivityUiState.Error -> {
