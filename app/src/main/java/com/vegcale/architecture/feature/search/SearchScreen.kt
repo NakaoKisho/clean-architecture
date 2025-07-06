@@ -143,8 +143,8 @@ internal fun SearchScreen(
                 color = MaterialTheme.colorScheme.primary
             )
         },
-    ) { _ ->
-        Column {
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
             AdmobBanner()
 
             Box(
