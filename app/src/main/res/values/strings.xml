@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">architecture</string>
+    <string name="app_name">地震マップ</string>
     <string name="ascending_order">昇順</string>
     <string name="closeness_order">現在地に近い順</string>
     <string name="date_and_time">発生日時</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">architecture</string>
+    <string name="app_name">Earthquake Map</string>
     <string name="ascending_order">ascending order</string>
     <string name="closeness_order">closeness to current location order</string>
     <string name="date_and_time">date and time</string>
