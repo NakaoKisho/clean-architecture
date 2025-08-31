@@ -1,15 +1,19 @@
 package com.vegcale.architecture.feature.search
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,32 +29,23 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -78,7 +73,6 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberMarkerState
 import com.vegcale.architecture.R
 import com.vegcale.architecture.data.model.EarthquakeInfo
-import com.vegcale.architecture.data.model.Points
 import com.vegcale.architecture.ui.components.AdmobBanner
 import com.vegcale.architecture.ui.theme.ArchitectureTheme
 import com.vegcale.architecture.ui.theme.BoldAlpha
@@ -92,37 +86,19 @@ import kotlinx.coroutines.launch
 fun SearchScreen(
     searchViewModel: SearchScreenViewModel = hiltViewModel()
 ) {
-    val uiState = searchViewModel.uiState.earthquakeData.collectAsStateWithLifecycle()
-    var earthquakeInfo = emptyList<EarthquakeInfo>()
-    if (uiState.value is SearchScreenUiState.Success) {
-        earthquakeInfo = (uiState.value as SearchScreenUiState.Success).data
-    } else if (uiState.value is SearchScreenUiState.Loading) {
-        earthquakeInfo = emptyList()
-    }
+    val uiState by searchViewModel.uiState.collectAsStateWithLifecycle()
 
     SearchScreen(
-        earthquakeInfo = earthquakeInfo,
-        resetEarthquakeInfo = searchViewModel::resetEarthquakeInfo,
-        updateEarthquakeInfo = searchViewModel::updateEarthquakeInfo,
-        clickedEarthquakeInfo = searchViewModel.uiState.clickedEarthquakeInfo,
-        updateData = searchViewModel::updateData,
-        latLng = searchViewModel.uiState.latLng,
-        datetime = searchViewModel.uiState.clickedEarthquakeInfo?.datetime ?: ""
+        uiState = uiState,
+        refresh = searchViewModel::refresh,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchScreen(
-    modifier: Modifier = Modifier,
-    earthquakeInfo: List<EarthquakeInfo>,
-    resetEarthquakeInfo: () -> Unit = {},
-    updateEarthquakeInfo: (String, String, Double, Double, Double, Int, List<Points>, String) -> Unit =
-        { _, _, _, _, _, _, _, _ -> },
-    clickedEarthquakeInfo: SearchScreenViewModel.ClickedEarthquakeInfo?,
-    updateData: () -> Unit = {},
-    latLng: LatLng,
-    datetime: String = ""
+    uiState: SearchScreenUiState = SearchScreenUiState.Loading,
+    refresh: () -> Unit = {},
 ) {
     var isSheetExpanded by rememberSaveable { mutableStateOf(false) }
     val sheetPeekHeight by animateDpAsState(
@@ -134,9 +110,27 @@ internal fun SearchScreen(
             },
         label = "Sheet peek height animation for BottomSheetScaffold in SearchScreen.kt"
     )
+
+    var isLoading by rememberSaveable { mutableStateOf(false) }
+    val earthquakeInfo = remember { mutableListOf<EarthquakeInfo>() }
+    when (uiState) {
+        is SearchScreenUiState.Failed -> {
+            isLoading = false
+        }
+        is SearchScreenUiState.Loading -> {
+            isLoading = true
+        }
+        is SearchScreenUiState.Success -> {
+            earthquakeInfo.clear()
+            earthquakeInfo.addAll(uiState.data)
+            isLoading = false
+        }
+    }
+
+    var clickedEarthquakeInfo by remember { mutableStateOf<EarthquakeInfo?>(null) }
+
     BottomSheetScaffold(
         sheetContent = { BottomSheetContent(clickedEarthquakeInfo) },
-        modifier = modifier,
         sheetPeekHeight = sheetPeekHeight,
         sheetDragHandle = {
             BottomSheetDefaults.DragHandle(
@@ -159,7 +153,10 @@ internal fun SearchScreen(
                 ) {
                     SmallFloatingActionButton(
                         onClick = {
-                            updateData()
+                            if (!isLoading) {
+                                isLoading = true
+                                refresh()
+                            }
                         },
                         modifier = Modifier
                             .padding(
@@ -174,9 +171,19 @@ internal fun SearchScreen(
                             hoveredElevation = 0.dp,
                         )
                     ) {
+                        val iconId = if (isLoading) R.drawable.baseline_loading else R.drawable.baseline_cached_24
+                        val degrees by rememberInfiniteTransition().animateFloat(
+                            initialValue = 0f,
+                            targetValue = 360f,
+                            animationSpec = infiniteRepeatable(
+                                animation = tween(durationMillis = 10000),
+                                repeatMode = RepeatMode.Restart
+                            )
+                        )
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_cached_24),
+                            painter = painterResource(id = iconId),
                             contentDescription = null,
+                            modifier = Modifier.rotate(degrees = if (isLoading) degrees else 0f),
                             tint = colorResource(R.color.blue_R000_G098_B160),
                         )
                     }
@@ -184,19 +191,15 @@ internal fun SearchScreen(
 
                 // Google Map
                 var zoomLevel by rememberSaveable { mutableFloatStateOf(0f) }
-                val cameraPositionState = rememberEmpCameraPositionState(
-                    inputs = arrayOf(datetime)
-                ) {
+                val cameraPositionState = rememberEmpCameraPositionState {
                     this.position = CameraPosition(
-                        latLng,
+                        LatLng(35.6812, 139.7671),
                         zoomLevel,
                         0f,
                         0f
                     )
                 }
-                zoomLevel = cameraPositionState.position.zoom
                 val googleMapUiSettings = DefaultMapUiSettings
-                val substituteText = stringResource(R.string.no_data)
                 val scope = rememberCoroutineScope()
                 val lazyListState = rememberLazyListState()
                 GoogleMap(
@@ -205,7 +208,7 @@ internal fun SearchScreen(
                     uiSettings = googleMapUiSettings,
                     onMapClick = {
                         isSheetExpanded = false
-                        resetEarthquakeInfo()
+                        clickedEarthquakeInfo = null
                     }
                 ) {
                     if (earthquakeInfo.isEmpty()) return@GoogleMap
@@ -223,15 +226,14 @@ internal fun SearchScreen(
                             snippet = hypocenter.place,
                             onClick = { _ ->
                                 isSheetExpanded = true
-                                updateEarthquakeInfo(
-                                    hypocenter.datetime,
-                                    hypocenter.place,
-                                    hypocenter.latitude,
-                                    hypocenter.longitude,
-                                    hypocenter.magnitude,
-                                    hypocenter.depth,
-                                    hypocenter.points,
-                                    substituteText
+                                clickedEarthquakeInfo = EarthquakeInfo(
+                                    datetime = hypocenter.datetime,
+                                    place = hypocenter.place,
+                                    latitude = hypocenter.latitude,
+                                    longitude = hypocenter.longitude,
+                                    magnitude = hypocenter.magnitude,
+                                    depth = hypocenter.depth,
+                                    points = hypocenter.points
                                 )
                                 scope.launch {
                                     lazyListState.animateScrollToItem(index)
@@ -243,18 +245,19 @@ internal fun SearchScreen(
 
                     // Markers for epicenters
                     clickedEarthquakeInfo?.points?.forEach { point ->
-                        if (point.latitude == substituteText || point.longitude == substituteText) return@forEach
+                        if (point.latitude == null || point.longitude == null) return@forEach
+
                         val markerState = rememberMarkerState(
                             position = LatLng(
-                                point.latitude.toDouble(),
-                                point.longitude.toDouble()
+                                point.latitude,
+                                point.longitude
                             )
                         )
                         Marker(
                             state = markerState,
-                            icon = BitmapHelper().vectorToBitmap(point.scaleDrawableId),
+                            icon = BitmapHelper().vectorToBitmap(point.scaleIcon),
                             title = point.place,
-                            snippet = stringResource(point.scaleStringId)
+                            snippet = stringResource(point.scale)
                         )
                     }
                 }
@@ -277,16 +280,6 @@ internal fun SearchScreen(
                                     .padding(start = 8.dp, end = 8.dp, bottom = 16.dp)
                                     .clickable {
                                         isSheetExpanded = true
-                                        updateEarthquakeInfo(
-                                            data.datetime,
-                                            data.place,
-                                            data.latitude,
-                                            data.longitude,
-                                            data.magnitude,
-                                            data.depth,
-                                            data.points,
-                                            substituteText
-                                        )
                                         scope.launch {
                                             lazyListState.animateScrollToItem(it)
                                         }
@@ -323,9 +316,7 @@ internal fun SearchScreen(
 }
 
 @Composable
-private fun BottomSheetContent(
-    itemDetail: SearchScreenViewModel.ClickedEarthquakeInfo?
-) {
+private fun BottomSheetContent(itemDetail: EarthquakeInfo?) {
     if (itemDetail == null) return
 
     Column(
@@ -351,25 +342,25 @@ private fun BottomSheetContent(
             painter = painterResource(R.drawable.baseline_landslide_24),
             contentDescription = stringResource(R.string.magnitude),
             titleText = stringResource(R.string.magnitude),
-            detailText = itemDetail.magnitude,
+            detailText = itemDetail.magnitude.toString(),
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_solar_power_24),
             contentDescription = stringResource(R.string.depth),
             titleText = stringResource(R.string.depth),
-            detailText = itemDetail.depth,
+            detailText = itemDetail.depth.toString(),
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_language_24),
             contentDescription = stringResource(R.string.latitude),
             titleText = stringResource(R.string.latitude),
-            detailText = itemDetail.latitude,
+            detailText = itemDetail.latitude.toString(),
         )
         SearchScreenCard(
             painter = painterResource(R.drawable.baseline_language_24),
             contentDescription = stringResource(R.string.longitude),
             titleText = stringResource(R.string.longitude),
-            detailText = itemDetail.longitude,
+            detailText = itemDetail.longitude.toString(),
         )
 
         if (itemDetail.points.isEmpty()) return
@@ -397,10 +388,9 @@ private fun BottomSheetContent(
 
         for (point in itemDetail.points) {
             if (
-                point.place == stringResource(R.string.no_data) &&
-                point.latitude == stringResource(R.string.no_data) &&
-                point.longitude == stringResource(R.string.no_data) &&
-                point.scaleStringId == R.string.no_data
+                point.place == null &&
+                point.latitude == null &&
+                point.longitude == null
             ) return
 
             val sizeInPx = with(LocalDensity.current) { -40.dp.roundToPx() }
@@ -426,7 +416,7 @@ private fun BottomSheetContent(
                         painter = painterResource(R.drawable.baseline_location_on_24),
                         contentDescription = stringResource(R.string.observation_place_name),
                         titleText = stringResource(R.string.observation_place_name),
-                        detailText = point.place,
+                        detailText = point.place ?: stringResource(R.string.no_data),
                         trailingIcon = {
                             val rotation by animateFloatAsState(
                                 targetValue = if (isDetailExpanded) 180f else 0f,
@@ -458,7 +448,7 @@ private fun BottomSheetContent(
                                 painter = painterResource(R.drawable.baseline_landslide_24),
                                 contentDescription = stringResource(R.string.seismic_intensity),
                                 titleText = stringResource(R.string.seismic_intensity),
-                                detailText = stringResource(point.scaleStringId),
+                                detailText = stringResource(point.scale),
                             )
                             SearchScreenCard(
                                 modifier = Modifier
@@ -466,7 +456,11 @@ private fun BottomSheetContent(
                                 painter = painterResource(R.drawable.baseline_language_24),
                                 contentDescription = stringResource(R.string.latitude),
                                 titleText = stringResource(R.string.latitude),
-                                detailText = point.latitude,
+                                detailText =
+                                    if (point.latitude == null)
+                                        stringResource(R.string.no_data)
+                                    else
+                                        point.latitude.toString(),
                             )
                             SearchScreenCard(
                                 modifier = Modifier
@@ -474,7 +468,11 @@ private fun BottomSheetContent(
                                 painter = painterResource(R.drawable.baseline_language_24),
                                 contentDescription = stringResource(R.string.longitude),
                                 titleText = stringResource(R.string.longitude),
-                                detailText = point.longitude,
+                                detailText =
+                                    if (point.longitude == null)
+                                        stringResource(R.string.no_data)
+                                    else
+                                        point.longitude.toString(),
                             )
                         }
                     }
@@ -483,125 +481,6 @@ private fun BottomSheetContent(
         }
     }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SearchTopAppBar(
-    modifier: Modifier = Modifier,
-    searchOnClick: () -> Unit
-) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
-
-    TopAppBar(
-        title = {},
-        modifier = modifier,
-        actions = {
-            TextField(
-                value = "",
-                onValueChange = {},
-                trailingIcon = {
-                    IconButton(onClick = searchOnClick) {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = stringResource(R.string.search_icon_description),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                },
-                shape = RoundedCornerShape(5.dp)
-            )
-
-            var isDescendingOrderClicked by rememberSaveable { mutableStateOf(true) }
-            var isAscendingOrderClicked by rememberSaveable { mutableStateOf(false) }
-            var isCurrentLocationOrderClicked by rememberSaveable { mutableStateOf(false) }
-            Box {
-                IconButton(onClick = { expanded = true }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.List,
-                        contentDescription = stringResource(R.string.list_icon_description),
-                        tint = Color.White
-                    )
-                }
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = {
-                        expanded = false
-                        isDescendingOrderClicked =
-                            (!isDescendingOrderClicked &&
-                                    !isAscendingOrderClicked &&
-                                    !isCurrentLocationOrderClicked)
-                    }
-                ) {
-                    val dropdownMenuItems = arrayOf(
-                        SearchDropdownMenuItemProperties(
-                            text = stringResource(R.string.ascending_order),
-                            onClick = {
-                                isDescendingOrderClicked =
-                                    if (!isDescendingOrderClicked)  {
-                                        if (isAscendingOrderClicked || isCurrentLocationOrderClicked) {
-                                            isAscendingOrderClicked = false
-                                            isCurrentLocationOrderClicked = false
-                                        }
-                                        true
-                                    } else {
-                                        false
-                                    }
-                            },
-                            modifier = Modifier.alpha(if (isDescendingOrderClicked) 1f else 0.6f)
-                        ),
-                        SearchDropdownMenuItemProperties(
-                            text = stringResource(R.string.descending_order),
-                            onClick = {
-                                isAscendingOrderClicked =
-                                    if (!isAscendingOrderClicked)  {
-                                        if (isDescendingOrderClicked || isCurrentLocationOrderClicked) {
-                                            isDescendingOrderClicked = false
-                                            isCurrentLocationOrderClicked = false
-                                        }
-                                        true
-                                    } else {
-                                        false
-                                    }
-                            },
-                            modifier = Modifier.alpha(if (isAscendingOrderClicked) 1f else 0.6f)
-                        ),
-                        SearchDropdownMenuItemProperties(
-                            text = stringResource(R.string.closeness_order),
-                            onClick = {
-                                isCurrentLocationOrderClicked =
-                                    if (!isCurrentLocationOrderClicked)  {
-                                        if (isDescendingOrderClicked || isAscendingOrderClicked) {
-                                            isDescendingOrderClicked = false
-                                            isAscendingOrderClicked = false
-                                        }
-                                        true
-                                    } else {
-                                        false
-                                    }
-                            },
-                            modifier = Modifier.alpha(if (isCurrentLocationOrderClicked) 1f else 0.6f)
-                        )
-                    )
-
-                    dropdownMenuItems.map {
-                        DropdownMenuItem(
-                            text = { Text(it.text) },
-                            onClick = it.onClick,
-                            modifier = it.modifier
-                        )
-                    }
-                }
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
-    )
-}
-
-data class SearchDropdownMenuItemProperties(
-    val text: String,
-    val onClick: () -> Unit,
-    val modifier: Modifier = Modifier
-)
 
 @Composable
 fun SearchScreenCard(
@@ -628,7 +507,7 @@ fun SearchScreenCard(
                     .weight(0.3f)
                     .alpha(DefaultAlpha)
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .width(2.dp)
                     .padding(vertical = 10.dp)
@@ -670,116 +549,7 @@ fun SearchScreenCard(
 @Preview(showBackground = true)
 @Composable
 fun SearchScreenPreview() {
-    val earthquakeInfo = listOf(
-        EarthquakeInfo(
-            datetime = "2023/01/01 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/02 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/03 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/04 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-        EarthquakeInfo(
-            datetime = "2023/01/05 01:00",
-            place = "テスト県",
-            latitude = 10.1,
-            longitude = 10.1,
-            magnitude = 5.0,
-            depth = 10,
-            points = listOf(
-                Points("テスト場所",1.0,1.0, 10),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",2.0,2.0, 20),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",3.0,3.0, 30),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-                Points("テスト場所",4.0,4.0, 40),
-            )
-        ),
-    )
-    val tokyoLatLng = LatLng(35.6812, 139.7671)
-
     ArchitectureTheme {
-        SearchScreen(
-            earthquakeInfo = earthquakeInfo,
-            clickedEarthquakeInfo = null,
-            latLng = tokyoLatLng,
-            datetime = ""
-        )
+        SearchScreen()
     }
 }

@@ -37,7 +37,7 @@ class GetEarthquakeSummaryUseCase @Inject constructor(
         return flow {
             emit(
                 p2pquakeRepository
-                    .getInfo(limit, offset)
+                    .getInfo(limit, offset).toList()
                     .filter { p2pquakeInfo ->
                         val previousEarthquakeDatetimeText =
                             offlineUserDataRepository.latestEarthquakeDatetime.first()

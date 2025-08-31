@@ -19,8 +19,8 @@ android {
         applicationId "com.vegcale.architecture"
         minSdk 29
         targetSdk 36
-        versionCode 4
-        versionName "1.2"
+        versionCode 5
+        versionName "2"
 
         def properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())

@@ -1,11 +1,13 @@
 package com.vegcale.architecture.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -25,12 +27,14 @@ fun EarthquakeMapApp() {
         val currentScreen = tabRowScreens.find { it.route == currentDestination?.route } ?: Map
 
         Scaffold(
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.primary)
+                .safeDrawingPadding(),
             topBar = {
                 EmpTopAppBar(
                     allScreens = tabRowScreens,
                     onTabSelected = { screen -> navController.navigateSingleTopTo(screen.route) },
                     currentScreen = currentScreen,
-                    Modifier.testTag("EmpTopAppBar")
                 )
             }
         ){ innerPadding ->
